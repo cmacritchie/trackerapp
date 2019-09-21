@@ -3,7 +3,7 @@ const Excercise = require('../models/excercise')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
-router.post('/excercise', auth, async (req, res) => {
+router.post('/api/excercise', auth, async (req, res) => {
     const excercise = new Excercise({
         ...req.body,
         owner: req.user._id
@@ -17,7 +17,7 @@ router.post('/excercise', auth, async (req, res) => {
     }
 })
 
-router.get('/excercise', async (req, res) => {
+router.get('/api/excercise', async (req, res) => {
     try {
         const excercises = await Excercise.find({})
         res.send(excercises)
@@ -26,7 +26,7 @@ router.get('/excercise', async (req, res) => {
     }
 })
 
-router.get('/excercise/:id', async (req, res) => {
+router.get('/api/excercise/:id', async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -42,7 +42,7 @@ router.get('/excercise/:id', async (req, res) => {
     }
 })
 
-router.patch('/excercise/:id', auth, async (req, res)=> {
+router.patch('/api/excercise/:id', auth, async (req, res)=> {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'duration', 'detail', 'date']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))

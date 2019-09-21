@@ -3,7 +3,7 @@ const Weight = require('../models/weight')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
-router.post('/weight', auth, async (req, res) => {
+router.post('/api/weight', auth, async (req, res) => {
     const weight = new Weight({
         ...req.body,
         owner: req.user._id
@@ -17,7 +17,7 @@ router.post('/weight', auth, async (req, res) => {
     }
 })
 
-router.get('/weight', async (req, res) => {
+router.get('/api/weight', async (req, res) => {
     try {
         const weights = await Weight.find({})
         res.send(weights)
@@ -26,7 +26,7 @@ router.get('/weight', async (req, res) => {
     }
 })
 
-router.get('/weight/:id', async (req, res) => {
+router.get('/api/weight/:id', async (req, res) => {
     const _id = req.params.id
     
     try {
@@ -42,7 +42,7 @@ router.get('/weight/:id', async (req, res) => {
     }
 })
 
-router.patch('/weight/:id', auth, async (req, res)=> {
+router.patch('/api/weight/:id', auth, async (req, res)=> {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['value', 'date']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))

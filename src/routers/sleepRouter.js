@@ -3,7 +3,7 @@ const Sleep = require('../models/sleep')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
-router.post('/sleep', auth, async (req, res) => {
+router.post('/api/sleep', auth, async (req, res) => {
     const sleep = new Sleep({
         ...req.body,
         owner: req.user._id
@@ -17,7 +17,7 @@ router.post('/sleep', auth, async (req, res) => {
     }
 })
 
-router.get('/sleep', async (req, res) => {
+router.get('/api/sleep', async (req, res) => {
     try {
         const sleep = await Sleep.find({})
         res.send(sleep)
@@ -26,7 +26,7 @@ router.get('/sleep', async (req, res) => {
     }
 })
 
-router.get('/sleep/:id', async (req, res) => {
+router.get('/api/sleep/:id', async (req, res) => {
     const _id = req.params._id
 
     try {
@@ -42,7 +42,7 @@ router.get('/sleep/:id', async (req, res) => {
     }
 })
 
-router.patch('/sleep/:id', auth, async (req, res) => {
+router.patch('/api/sleep/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['date', 'down', 'up']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))

@@ -5,17 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
+    "server": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^4.1.2",
     "config": "^3.2.2",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
     "request": "^2.88.0"
   },
   "devDependencies": {

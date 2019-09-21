@@ -3,7 +3,7 @@ const Programming = require('../models/programming')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
-router.post('/programming', auth, async (req, res) => {
+router.post('/api/programming', auth, async (req, res) => {
     const programming = new Programming({
         ...req.body,
         owner: req.user._id
@@ -17,7 +17,7 @@ router.post('/programming', auth, async (req, res) => {
     }
 })
 
-router.get('/programming', async (req, res) => {
+router.get('/api/programming', async (req, res) => {
     try {
         const programming = await Programming.find({})
         res.send(programming) 
@@ -26,7 +26,7 @@ router.get('/programming', async (req, res) => {
     }
 })
 
-router.get('/programming/:id', async (req, res) => {
+router.get('/api/programming/:id', async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -42,7 +42,7 @@ router.get('/programming/:id', async (req, res) => {
     }
 })
 
-router.patch('/programming/:id', auth, async (req, res) => {
+router.patch('/api/programming/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['language', 'duration', 'date', 'description']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
