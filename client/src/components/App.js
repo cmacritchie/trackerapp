@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'; //there is React Router, but RRD is bes for web apps
+import { BrowserRouter, Route, Switch } from 'react-router-dom'; //there is React Router, but RRD is bes for web apps
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Header from './Header';
 import Login from '../pages/Login'
+import Excercise from '../pages/Excercise'
+import Programming from '../pages/Programming'
+import ProgrammingEntry from '../pages/ProgrammingEntry'
+import ProgrammingWrapper from '../pages/ProgrammingWrapper'
+import Sleep from '../pages/Sleep'
+import Weight from '../pages/Weight'
+
 const Dashboard = () => <h2>Dashboard</h2>
 const Landing = () => <h2>Landing</h2>
 const SurveyNew = () => <h2>SurveyNew</h2>
@@ -28,9 +35,16 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route path="/surveys" component={Dashboard} />
             <Route path="/login" component={Login} />
+            <Route path="/excercise" component={Excercise} />
+            <Switch>
+              <Route exact path="/programming" component={Programming} />
+              <Route path="/programming/entry" component={ProgrammingWrapper} />
+              <Route path="/programming/edit/:entryId" component={ProgrammingWrapper} />
+            </Switch>
+            <Route path="/sleep" component={Sleep} />
+            <Route path="/weight" component={Weight} />
           </div>
         </BrowserRouter>
-        Hi There
       </div>
     );
   }

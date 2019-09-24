@@ -5,6 +5,9 @@ import { NavLink } from 'react-router-dom';
 import { logout } from '../actions/authActions';
 
 class Header extends Component {
+
+    
+
     renderContent() {
         const { authorized } = this.props;
         switch(authorized.isAuthenticated) {
@@ -13,13 +16,25 @@ class Header extends Component {
             case false:
                 return (
                     <li>
-                        <NavLink to="/login">About</NavLink>
+                        <NavLink to="/login">Admin</NavLink>
                     </li>
                 );
             default:
                 return (<Fragment>
                             <li>
                                 welcome {this.props.authorized.user.name}
+                            </li>
+                            <li>
+                                <NavLink to="/excercise">excercise</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/programming">programming</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/sleep">sleep</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/weight">weight</NavLink>
                             </li>
                             <li>
                                 <a onClick={() => this.props.logout(authorized.token)} href='#!'>
@@ -35,9 +50,10 @@ class Header extends Component {
     render() {
         console.log(this.props.authorized)
         return (
+            <Fragment>
             <nav>
                 <div className="nav-wrapper">
-                    <a className="left brand-logo">
+                    <a href="#!" className="left brand-logo">
                         Tracker
                     </a>
                     <ul className="right">
@@ -45,6 +61,14 @@ class Header extends Component {
                     </ul>
                 </div>
             </nav>
+
+            <ul className="sidenav" id="mobile-demo">
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="badges.html">Components</a></li>
+                <li><a href="collapsible.html">Javascript</a></li>
+                <li><a href="mobile.html">Mobile</a></li>
+            </ul>
+            </Fragment>
         )
     }
 }

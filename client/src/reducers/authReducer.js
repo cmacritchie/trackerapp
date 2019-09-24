@@ -23,7 +23,8 @@ const initialState = {
 const noUser = {
     isAuthenticated: false,
     loading: false,
-    user: null
+    user: null,
+    token: null
 }
 
 export default function(state = initialState, action) {

@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
 import authReducer from './authReducer'
+import programmingReducer from './programmingReducer'
 
 export default combineReducers({
-   authorized: authReducer
+   authorized: authReducer,
+   programming: programmingReducer
 })

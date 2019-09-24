@@ -26,7 +26,17 @@ router.get('/api/programming', async (req, res) => {
     }
 })
 
-router.get('/api/programming/:id', async (req, res) => {
+//add to postman
+router.get('/api/programming/me', auth, async (req, res) => {
+    try {
+        const programming = await Programming.find({ owner: req.user._id })
+        res.send(programming) 
+    } catch(e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/programming/:id', auth, async (req, res) => {
     const _id = req.params.id
 
     try {
