@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true,
     },
     email: {
         type: String,
@@ -37,6 +38,20 @@ const userSchema = new mongoose.Schema({
         type: Date,
         require: false
     },
+    // excercise: [{
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: 'Excercise',
+    //     localField: '_id',
+    //     foreignField: 'owner'
+    // }],
+    // programmings: [{
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: 'Programming',
+    //     localField: '_id',
+    //     foreignField: 'owner'
+    // }],
+    // sleep: [{type: mongoose.Schema.Types.ObjectId, ref: 'Sleep'}],
+    // weight: [{type: mongoose.Schema.Types.ObjectId, ref: 'Weight'}],
     tokens: [{
         token: {
             type: String,
@@ -51,6 +66,7 @@ const userSchema = new mongoose.Schema({
 //Virtuals are document properties that you can get and set but that do not get persisted to MongoDB.
 //The getters are useful for formatting or combining fields, while setters are useful for de-composing
 // a single value into multiple values for storage.
+
 userSchema.virtual('excercise', {
     ref: 'Excercise',
     localField: '_id',
@@ -86,7 +102,7 @@ userSchema.methods.toJSON = function () {
     const userObject = user.toObject()
 
     delete userObject.password
-    //delete userObject.tokens {hidden for now, should uncomment}
+    delete userObject.tokens 
 
     return userObject
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 const Sleep = require('../models/sleep')
+const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
@@ -26,7 +27,30 @@ router.get('/api/sleep', async (req, res) => {
     }
 })
 
-router.get('/api/sleep/:id', async (req, res) => {
+router.get('/api/sleep/guest', async (req, res) => {
+
+    try {
+        const craig = await User.findOne({email:'craig.macritchie@gmail.com'})
+        const sleep = await Sleep.find({owner:craig._id})
+
+        res.send(sleep)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/sleep/me', auth, async (req, res) => {
+
+    try {
+        const sleep = await Sleep.find({ owner:req.user._id })
+
+        res.send(sleep)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/sleep/:id', auth, async (req, res) => {
     const _id = req.params._id
 
     try {
@@ -65,5 +89,18 @@ router.patch('/api/sleep/:id', auth, async (req, res) => {
 })
 
 //delete
+router.delete('/api/sleep/:id', auth, async (req, res) => {
+    try {
+        const sleep = await Sleep.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
+
+        if(!sleep) {
+            res.status(404).send()
+        }
+        
+        res.send(sleep)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
 
 module.exports = router

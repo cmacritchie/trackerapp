@@ -64,6 +64,24 @@ router.get('/api/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
+router.get('/api/users/guest', async (req, res) => {
+    try{
+        const user = await User.findOne({ name:'craig MacRitchie' }) 
+
+        if(!user) {
+            res.status(404).send({error: "guest user not Found!"})
+        }
+        const guestUser ={ 
+            _id: user._id,
+            name:"guest"
+        }
+        res.send(guestUser)
+    } catch (e) {
+        res.status(500).send()
+    }
+    
+})
+
 router.patch('/api/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'birthdate']
@@ -82,6 +100,7 @@ router.patch('/api/users/me', auth, async (req, res) => {
     }
 })
 
+//add to postman
 router.delete('/api/users/me', auth, async (req, res) => {
     try {
         await req.user.remove()
@@ -90,5 +109,7 @@ router.delete('/api/users/me', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+
 
 module.exports = router

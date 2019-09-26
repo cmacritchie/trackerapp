@@ -2,7 +2,11 @@ import {
     PROGRAMMING_CREATE,
     PROGRAMMING_ALL_USER,
     PROGRAMMING_FETCHING,
-    PROGRAMMING_DONE_FETCHING
+    PROGRAMMING_DONE_FETCHING,
+    PROGRAMMING_UPDATE,
+    PROGRAMMING_DELETE,
+    PROGRAMMING_INITIAL_STATE,
+    PROGRAMMING_GUEST
     } from '../actions/types';
 
 
@@ -17,11 +21,11 @@ export default function(state = initialState, action) {
     
     switch(type){
         case PROGRAMMING_CREATE:
-                debugger;
             return {
                 ...state,
                 programmingList: [payload, ...state.programmingList]
             }
+        case PROGRAMMING_GUEST:
         case PROGRAMMING_ALL_USER:
             return{
                 ...state,
@@ -38,6 +42,26 @@ export default function(state = initialState, action) {
                 fetchingProgramming: false,
                 programmingLoaded: true,
             }
+        case PROGRAMMING_UPDATE:
+            return {
+                ...state,
+                programmingList: state.programmingList.map(item => {
+                    if(item._id == payload._id)
+                    {
+                        return payload
+                    }
+
+                    return item
+                })
+            }
+        case PROGRAMMING_DELETE:
+            return {
+                ...state,
+                programmingList: state.programmingList.filter(item => item._id != payload._id)
+            }
+        case PROGRAMMING_INITIAL_STATE:
+            return initialState;
+        
         default:
             return state
     }

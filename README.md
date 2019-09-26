@@ -53,4 +53,9 @@ set up proxy so that routes relative routes will run properly
 start with login and reducers. make sure that you save JWT in cookies
 
 
+ToDos:
+Pagination / Lazy Loading
+overall Stats
+mobile View
+set up Test Scripts
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 //change to date time, set up a virtual
 
-const Excercise = mongoose.model('Excercise', new mongoose.Schema({
+const Exercise = mongoose.model('Exercise', new mongoose.Schema({
     description: {
         type: String,
         required:true
@@ -29,4 +29,4 @@ const Excercise = mongoose.model('Excercise', new mongoose.Schema({
      timestamps: true 
 }))
 
-module.exports = Excercise
+module.exports = Exercise

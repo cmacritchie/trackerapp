@@ -1,8 +1,5 @@
 import React, { Fragment, Component } from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types';
-import { createProgrammingEntry } from '../actions/programmingActions'
-import { runInThisContext } from 'vm';
+import moment from 'moment'
 
 class Programming extends Component {
 
@@ -15,7 +12,7 @@ class Programming extends Component {
             programmingEntry: {
                 language: '',
                 duration:'',
-                date:'',
+                date:moment().format('YYYY-MM-DD'),
                 description:''
             }
         }
@@ -24,13 +21,15 @@ class Programming extends Component {
     componentDidMount() {
         const { editItem } = this.props
         if(editItem){
-            const { language, duration, date, description} = editItem
+            const { language, duration,  description, _id} = editItem
+            const date = new Date(editItem.date)
             this.setState({
                 programmingEntry: {
                     language,
                     duration,
                     date,
-                    description
+                    description,
+                    _id
                 }
             })
         }
@@ -38,6 +37,7 @@ class Programming extends Component {
 
     handleEntryChange = propertyName => event => {
         const { programmingEntry } = this.state;
+        console.log(this.state)
         let updateEntry = {
             ...programmingEntry,
             [propertyName]: event.target.value
@@ -46,11 +46,10 @@ class Programming extends Component {
     }
 
     submitEntry = e => {
-        debugger;
         e.preventDefault()
         const { programmingEntry } = this.state;
-        // this.props.createProgrammingEntry(programmingEntry)
-        this.props.submitEntry(programmingEntry)
+        const { onsubmit } = this.props;
+        onsubmit(programmingEntry)
     }
 
     render() {
@@ -76,9 +75,8 @@ class Programming extends Component {
                         />
                     <input
                         type='date'
-                        placeholder ='date'
                         name='date'
-                        value = {this.state.programmingEntry.date}
+                        value = {moment(this.state.programmingEntry.date).format('YYYY-MM-DD')}
                         onChange = {this.handleEntryChange('date')}
                         required
                         />
@@ -97,8 +95,4 @@ class Programming extends Component {
     }
 }
 
-Programming.propTypes = {
-    createProgrammingEntry: PropTypes.func.isRequired,
-  };
-
-export default connect(null, { createProgrammingEntry })(Programming)
+export default Programming

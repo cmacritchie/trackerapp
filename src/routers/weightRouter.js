@@ -1,5 +1,6 @@
 const express = require('express')
 const Weight = require('../models/weight')
+const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
@@ -26,7 +27,29 @@ router.get('/api/weight', async (req, res) => {
     }
 })
 
-router.get('/api/weight/:id', async (req, res) => {
+//add to postman
+router.get('/api/weight/guest', async (req, res) => {
+    try {
+        const craig = await User.findOne({email:'craig.macritchie@gmail.com'})
+        const weight = await Weight.find({owner:craig._id}) 
+
+        res.send(weight)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+//add to postman
+router.get('/api/weight/me', auth, async (req, res) => {
+    try {
+        const weight = await Weight.find({ owner: req.user._id })
+        res.send(weight)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/weight/:id', auth, async (req, res) => {
     const _id = req.params.id
     
     try {
@@ -64,6 +87,19 @@ router.patch('/api/weight/:id', auth, async (req, res)=> {
     }
 })
 
-//delete
+//delete add to postman
+router.delete('/api/weight/:id', auth, async (req, res) => {
+    try {
+        const weight = await Weight.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
+
+        if(!weight){
+            res.status(404).send()
+        }
+        
+        res.send(weight)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
 
 module.exports = router

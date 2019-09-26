@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { history } from '../components/App'
+
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -7,6 +9,7 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
+    PROGRAMMING_INITIAL_STATE
     // CLEAR_PROFILE
   } from './types';
 
@@ -58,16 +61,16 @@ export const login = (credentials) => async dispatch => {
     };
     
     try {
-      debugger;
+
       const res = await axios.post('/api/users/logout', null, config);
 
-    debugger;
       console.log(res)
-      dispatch({
-        type: LOGOUT,
-      });
+      dispatch({ type: LOGOUT });
+      dispatch({ type: PROGRAMMING_INITIAL_STATE})
+      history.push('/',[])
+      
   
-    //   dispatch(loadUser());
+  
     } catch (err) {
       console.log(err)
       const errors = err.response.data.errors;

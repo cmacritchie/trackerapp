@@ -7,7 +7,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    FETCH_USER
+    FETCH_USER,
+    FETCH_GUEST
     // ACCOUNT_DELETED
   } from '../actions/types';
   
@@ -39,8 +40,14 @@ export default function(state = initialState, action) {
                 loading: false,
                 user: payload
             } || noUser;
+        case FETCH_GUEST:
+                return {
+                    ...state,
+                    isAuthenticated: false,
+                    loading: false,
+                    user: payload
+                } || noUser;
         case LOGIN_SUCCESS:
-            
             cookies.set('token', payload.token);
             
             return {

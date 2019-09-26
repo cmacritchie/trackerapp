@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react'
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions/authActions'
@@ -34,6 +35,12 @@ class Login extends Component {
     };
 
     render() {
+        const { authorized } = this.props;
+
+        if(authorized.isAuthenticated) {
+            return <Redirect to="/" />
+        }
+
         return (
             <Fragment>
                 <h1>Sign in</h1>
@@ -46,17 +53,13 @@ class Login extends Component {
                     onChange={this.handleCredentialChange('email')}
                     required
                     />
-
-                    <p>
-                        password
-                    </p>
                 <input  
-                type='password'
-                placeholder ='Password'
-                name='password'
-                value={this.state.userCredentials.password}
-                onChange={this.handleCredentialChange('password')}
-                required
+                    type='password'
+                    placeholder ='Password'
+                    name='password'
+                    value={this.state.userCredentials.password}
+                    onChange={this.handleCredentialChange('password')}
+                    required
                     />
                     <input type='submit' className='btn btn-primary' value='Login' />
                 </form>
@@ -69,7 +72,8 @@ Login.propTypes = {
     login: PropTypes.func.isRequired,
   };
 
-export default connect(
-    null, 
-    { login }
-    )(Login);
+  const mapStatetoProps =({ authorized }) => {
+    return { authorized }
+}
+
+export default connect(mapStatetoProps, { login })(Login);

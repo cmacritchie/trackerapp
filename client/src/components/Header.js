@@ -15,9 +15,26 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <li>
-                        <NavLink to="/login">Admin</NavLink>
-                    </li>
+                    <Fragment>
+                            <li>
+                                guest enter
+                            </li>
+                            <li>
+                                <NavLink to="/excercise">excercise</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/programming">programming</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/sleep">sleep</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/weight">weight</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/login">Admin</NavLink>
+                            </li>    
+                        </Fragment>                   
                 );
             default:
                 return (<Fragment>

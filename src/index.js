@@ -1,7 +1,7 @@
 const express = require('express')
 require('./db/mongoose')
 
-const excerciseRouter = require('./routers/excerciseRouter')
+const exerciseRouter = require('./routers/exerciseRouter')
 const programmingRouter = require('./routers/programmingRouter')
 const sleepRouter = require('./routers/sleepRouter')
 const userRouter = require('./routers/userRouter')
@@ -11,7 +11,7 @@ const app = express()
 const port = process.env.PORT || 5000
 
 app.use(express.json())
-app.use(excerciseRouter)
+app.use(exerciseRouter)
 app.use(programmingRouter)
 app.use(sleepRouter)
 app.use(userRouter)
