@@ -19,7 +19,6 @@ export const createWeightEntry = entry => async dispatch => {
     try {
         const res = await axios.post('/api/weight', entry)
 
-        debugger;
         dispatch({
             type:WEIGHT_CREATE,
             payload: res.data 
@@ -34,14 +33,12 @@ export const createWeightEntry = entry => async dispatch => {
 }
 
 export const updateWeightEntry = entry => async dispatch => {
-    debugger;
     const { authorized } = store.getState();
     axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}` 
     
     try {
         const res = await axios.patch(`/api/weight/${entry._id}`, entry)
 
-        debugger;
         dispatch({
             type:WEIGHT_UPDATE,
             payload: res.data 
@@ -90,7 +87,6 @@ export const deleteUserWeight = (id) => async dispatch => {
 }
 
 export const getGuestWeight = () => async dispatch => {
-    debugger
     try{
         const res = await axios.get('/api/weight/guest')
         dispatch({ type:WEIGHT_FETCHING })

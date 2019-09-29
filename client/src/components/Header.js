@@ -20,7 +20,7 @@ class Header extends Component {
                                 guest enter
                             </li>
                             <li>
-                                <NavLink to="/excercise">excercise</NavLink>
+                                <NavLink to="/exercise">exercise</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/programming">programming</NavLink>
@@ -32,7 +32,7 @@ class Header extends Component {
                                 <NavLink to="/weight">weight</NavLink>
                             </li>
                             <li>
-                                <NavLink to="/login">Admin</NavLink>
+                                <NavLink to="/login">Login</NavLink>
                             </li>    
                         </Fragment>                   
                 );
@@ -42,7 +42,7 @@ class Header extends Component {
                                 welcome {this.props.authorized.user.name}
                             </li>
                             <li>
-                                <NavLink to="/excercise">excercise</NavLink>
+                                <NavLink to="/exercise">exercise</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/programming">programming</NavLink>

@@ -19,7 +19,6 @@ export const createSleepEntry = entry => async dispatch => {
     try {
         const res = await axios.post('/api/sleep', entry)
 
-        debugger;
         dispatch({
             type:SLEEP_CREATE,
             payload: res.data 
@@ -34,14 +33,12 @@ export const createSleepEntry = entry => async dispatch => {
 }
 
 export const updateSleepEntry = entry => async dispatch => {
-    debugger;
     const { authorized } = store.getState();
     axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}` 
     
     try {
         const res = await axios.patch(`/api/sleep/${entry._id}`, entry)
 
-        debugger;
         dispatch({
             type:SLEEP_UPDATE,
             payload: res.data 
@@ -90,10 +87,8 @@ export const deleteUserSleep = (id) => async dispatch => {
 }
 
 export const getGuestSleep = () => async dispatch => {
-    debugger;
     try{
         const res = await axios.get(`/api/sleep/guest`)
-        debugger;
         dispatch({ type:SLEEP_FETCHING })
         dispatch({
             type: SLEEP_GUEST,

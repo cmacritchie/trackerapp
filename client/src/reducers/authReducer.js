@@ -47,6 +47,7 @@ export default function(state = initialState, action) {
                     loading: false,
                     user: payload
                 } || noUser;
+        case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
             cookies.set('token', payload.token);
             

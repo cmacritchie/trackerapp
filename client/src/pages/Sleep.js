@@ -7,15 +7,26 @@ import { getAllUserSleep,
         deleteUserSleep } from '../actions/sleepActions'
 import moment from 'moment'
 
+const SleepView = ({authorized}) => {
+
+    if(authorized.loading) {
+        return <p>loading</p>
+    } else if(authorized.isAuthenticated){
+        return <SleepConnect guest={false} />
+    } else {
+        return <SleepConnect guest={true} />
+    }
+
+}
+
 class Sleep extends React.Component {
 
     componentDidMount() {
-        const { getAllUserSleep, getGuestSleep, sleep, authorized } = this.props;
+        const { getAllUserSleep, getGuestSleep, sleep, authorized, guest } = this.props;
     
-        if(!authorized.isAuthenticated) {
-            debugger;
+        if(guest && !sleep.sleepLoaded) {
             getGuestSleep()
-        } else if(sleep.sleepList.length == 0 && ! sleep.sleepLoaded) {
+        } else if(!sleep.sleepLoaded) {
             getAllUserSleep()
         }
     }
@@ -52,15 +63,26 @@ class Sleep extends React.Component {
 
 
     render() {
-        const { authorized } = this.props;
+        const { authorized, sleep } = this.props;
+
+        if(!sleep.sleepLoaded) {
+            return <p>loading</p>
+        }
+
         return (
             <div>
+                <br />
                 {authorized.isAuthenticated &&
                 <NavLink to="/sleep/entry">
                     <button className="btn waves-effect waves-light" type="button">
                         New Entry
                     </button>
                 </NavLink>}
+
+                { sleep.sleepList.length === 0 ? 
+
+                <p>No Sleep Entries</p>
+                :
                 <table>
                     <thead>
                         <tr>
@@ -79,6 +101,7 @@ class Sleep extends React.Component {
                         {this.renderTable()}
                     </tbody>
                 </table>
+                }
             </div>
         )
     }
@@ -94,6 +117,8 @@ Sleep.propTypes = {
       return { sleep, authorized }
   }
 
-export default connect(mapStateToProps, { getAllUserSleep,
+const SleepConnect = connect(mapStateToProps, { getAllUserSleep,
     getGuestSleep,
     deleteUserSleep })(Sleep)
+
+export default connect(mapStateToProps)(SleepView)

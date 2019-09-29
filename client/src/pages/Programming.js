@@ -7,14 +7,25 @@ import { getAllUserProgramming,
         getGuestProgramming } from '../actions/programmingActions'
 import moment from 'moment'
 
+const ProgrammingView = ({ authorized }) => {
+    if(authorized.loading) {
+        return <p>loading</p>
+    } else if(authorized.isAuthenticated){
+        return <ProgrammingConnect guest={false} />
+    } else {
+        return <ProgrammingConnect guest={true} />
+    }
+}
+
 class Programming extends React.Component {
 
     componentDidMount(){
-        const { getAllUserProgramming, getGuestProgramming, programming, authorized } = this.props
+        const { getAllUserProgramming, getGuestProgramming, programming, authorized, guest } = this.props
 
-        if(!authorized.isAuthenticated) {
+        if(guest && !programming.programmingLoaded) {
             getGuestProgramming()
-        } else if(programming.programmingList.length == 0 && !programming.programmingLoaded ){
+        // } else if(programming.programmingList.length == 0 && !programming.programmingLoaded ){
+        } else if (!programming.programmingLoaded){
             getAllUserProgramming()
         } 
     }
@@ -51,15 +62,26 @@ class Programming extends React.Component {
     }
 
     render() {
-        const { authorized } = this.props;
+        const { authorized, programming } = this.props;
+
+        if(!programming.programmingLoaded){
+            return <p>loading</p>
+        }
+
         return (
             <div>
+                <br />
                 {authorized.isAuthenticated &&
                 <NavLink to="/programming/entry">
                     <button className="btn waves-effect waves-light" type="button">
                         New Entry
                     </button>
                 </NavLink>}
+
+                { programming.programmingList.length === 0 ?
+                 
+                <p>No Programming Entries</p>
+                :
                 <table>
                     <thead>
                         <tr>
@@ -79,6 +101,7 @@ class Programming extends React.Component {
                         {this.renderTable()}
                     </tbody>
                 </table>
+                }
             </div>
         )
     }
@@ -94,4 +117,8 @@ const mapStateToProps = ({ programming, authorized }) => {
     return { programming, authorized }
 } 
 
-export default connect(mapStateToProps, { getAllUserProgramming, deleteUserProgramming, getGuestProgramming })(Programming)
+const ProgrammingConnect = connect(mapStateToProps, 
+    { getAllUserProgramming, deleteUserProgramming, getGuestProgramming })
+    (Programming)
+
+export default connect(mapStateToProps)(ProgrammingView)

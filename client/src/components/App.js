@@ -1,34 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'; //there is React Router, but RRD is bes for web apps
 import { connect } from 'react-redux';
 import { ToastContainer, Flip } from 'react-toastify';
 import { createBrowserHistory } from 'history';
-import * as actions from '../actions';
+import { fetchUser } from '../actions/authActions';
 import Header from './Header';
+import Register from '../pages/Register'
 import Login from '../pages/Login'
 import Exercise from '../pages/Exercise'
 import Programming from '../pages/Programming'
 import ProgrammingWrapper from '../pages/ProgrammingWrapper'
 import Sleep from '../pages/Sleep'
 import Weight from '../pages/Weight'
-
-const Dashboard = () => <h2>Dashboard</h2>
-const Landing = () => <h2>Landing</h2>
-const SurveyNew = () => <h2>SurveyNew</h2>
+import { store } from '../index';
 
 export const history = createBrowserHistory()
 
+const Landing =()=><h1>Landing</h1>
+const Dashboard =()=><h1>Dash</h1>
 
 
-class App extends Component {
+const App = () => {
   //componentWillMount is deprecated and the difference in time
   //to render is considered negligible
-  componentDidMount() {
-    this.props.fetchUser()
-}
+
+  useEffect(() => {
+    store.dispatch(fetchUser());
+  }, []);
+
+ 
 
 
-  render() {
+
     return (
       <div className="container">
         <ToastContainer
@@ -49,22 +52,28 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route path="/surveys" component={Dashboard} />
             <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
             <Switch>
               <Route path="/exercise" component={Exercise} />
-
             </Switch>
             <Switch>
               <Route exact path="/programming" component={Programming} />
               <Route path="/programming/entry" component={ProgrammingWrapper} />
               <Route path="/programming/edit/:entryId" component={ProgrammingWrapper} />
             </Switch>
-            <Route path="/sleep" component={Sleep} />
-            <Route path="/weight" component={Weight} />
+            <Switch>
+              <Route path="/sleep" component={Sleep} />
+
+            </Switch>
+            <Switch>
+              <Route path="/weight" component={Weight} />
+              
+            </Switch>
           </div>
         </BrowserRouter>
       </div>
     );
   }
-}
 
-export default connect(null, actions)(App);
+
+export default App;

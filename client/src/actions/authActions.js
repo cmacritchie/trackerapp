@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { history } from '../components/App'
+import Cookies from 'universal-cookie';
 
 import {
+    FETCH_USER,
+    FETCH_GUEST, 
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     USER_LOADED,
@@ -9,9 +12,31 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    PROGRAMMING_INITIAL_STATE
+    PROGRAMMING_INITIAL_STATE,
+    EXERCISE_INITIAL_STATE,
+    SLEEP_INITIAL_STATE,
+    WEIGHT_INITIAL_STATE
     // CLEAR_PROFILE
   } from './types';
+
+  export const fetchUser = () => async dispatch => {
+    const cookies = new Cookies();
+    const token = cookies.get('token')
+    if(token){
+        const res = await axios.get('/api/users/me', { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: FETCH_USER, 
+            payload:res.data
+        });
+    } else {
+        const resAlt = await axios.get('/api/users/guest')
+        dispatch({
+            type: FETCH_GUEST,
+            payload:resAlt.data
+        })
+    }
+}
+
 
 //Login User
 export const login = (credentials) => async dispatch => {
@@ -27,32 +52,21 @@ export const login = (credentials) => async dispatch => {
   
     try {
       const res = await axios.post('/api/users/login', body, config);
-  
-      console.log(res.data);
-
-    debugger;
 
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
       });
   
-    //   dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
   
-    //   if (errors) {
-    //     errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    //   }
-  
-    //   dispatch({
-    //     type: LOGIN_FAIL
-    //   });
+    //Login Fail Add
     }
   };
 
   export const logout = (token) => async dispatch => {
-    debugger;
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -67,21 +81,32 @@ export const login = (credentials) => async dispatch => {
       console.log(res)
       dispatch({ type: LOGOUT });
       dispatch({ type: PROGRAMMING_INITIAL_STATE})
+      dispatch({ type: EXERCISE_INITIAL_STATE})
+      dispatch({ type: SLEEP_INITIAL_STATE})
+      dispatch({ type: WEIGHT_INITIAL_STATE})
+
+      //Navigate?
       history.push('/',[])
-      
-  
-  
+    
     } catch (err) {
       console.log(err)
       const errors = err.response.data.errors;
-      debugger
-    //   if (errors) {
-    //     errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    //   }
-  
-    //   dispatch({
-    //     type: LOGIN_FAIL
-    //   });
     }
 
   };
+
+  export const register = (credentials) => async dispatch => {
+    try {
+      const res = await axios.post('/api/users', credentials);
+      // dispatch({ type: PROGRAMMING_INITIAL_STATE})
+      //reset all reducers?
+      dispatch({
+        type:REGISTER_SUCCESS,
+        payload:res.data
+      })
+
+    } catch (err) {
+      console.log(err)
+      dispatch({type:REGISTER_FAIL})
+    }
+  }

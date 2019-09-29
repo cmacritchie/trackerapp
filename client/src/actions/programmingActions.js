@@ -19,7 +19,6 @@ export const createProgrammingEntry = entry => async dispatch => {
     try {
         const res = await axios.post('/api/programming', entry)
 
-        debugger;
         dispatch({
             type:PROGRAMMING_CREATE,
             payload: res.data 
@@ -34,14 +33,12 @@ export const createProgrammingEntry = entry => async dispatch => {
 }
 
 export const updateProgrammingEntry = entry => async dispatch => {
-    debugger;
     const { authorized } = store.getState();
     axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}` 
     
     try {
         const res = await axios.patch(`/api/programming/${entry._id}`, entry)
 
-        debugger;
         dispatch({
             type:PROGRAMMING_UPDATE,
             payload: res.data 

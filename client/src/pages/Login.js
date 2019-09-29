@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../actions/authActions'
@@ -43,7 +43,7 @@ class Login extends Component {
 
         return (
             <Fragment>
-                <h1>Sign in</h1>
+                <h1>Login</h1>
                 <form className='form' onSubmit={this.submitEntry}>
                 <input  
                     type='email'
@@ -63,6 +63,11 @@ class Login extends Component {
                     />
                     <input type='submit' className='btn btn-primary' value='Login' />
                 </form>
+                <p>
+                    Not registered?
+                    <br />
+                    <NavLink to="/register">Register Here</NavLink>
+                </p>
             </Fragment>
         )
     }

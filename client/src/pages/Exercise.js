@@ -7,14 +7,28 @@ import { getAllUserExercise,
         deleteUserExercise } from '../actions/exerciseActions'
 import moment from 'moment'
 
+const ExerciseView = ({authorized}) => {
+
+    if(authorized.loading) {
+        return <p>loading</p>
+    } else if(authorized.isAuthenticated){
+        return <ExerciseConnect guest={false} />
+    } else {
+        return <ExerciseConnect guest={true} />
+    }
+
+}
+
+
 class Exercise extends React.Component {
 
     componentDidMount() {
-        const { getAllUserExercise, getGuestExercise, exercise, authorized } = this.props
+        const { getAllUserExercise, getGuestExercise, exercise, authorized, guest } = this.props
 
-        if(!authorized.isAuthenticated) {
+        if(guest && !exercise.exerciseLoaded) {
             getGuestExercise()
-        } else if(exercise.exerciseList.length == 0 && !exercise.exerciseLoaded)  {
+        // } else if(exercise.exerciseList.length == 0 && !exercise.exerciseLoaded)  {
+        } else if (!exercise.exerciseLoaded) {
             getAllUserExercise()
         }
     }
@@ -22,6 +36,7 @@ class Exercise extends React.Component {
     renderTable() {
         const { exercise, deleteUserExercise, authorized } = this.props;
         const { exerciseList } = exercise
+
         return exerciseList.map(item => {
             
             return (
@@ -51,15 +66,26 @@ class Exercise extends React.Component {
     }
 
     render() {
-        const { authorized } = this.props;
+        const { authorized, exercise } = this.props;
+       
+        if(!exercise.exerciseLoaded){
+            return <p>loading</p>
+        }
+
         return (
             <div>
+                <br />
                 { authorized.isAuthenticated && 
                 <NavLink to="/exercise/entry">
                     <button className="btn waves-effect waves-light" type="button">
                         New Entry
                     </button>
                 </NavLink>}
+                
+                { exercise.exerciseList.length === 0 ?
+                
+                <p>No Exercise Entries</p>
+                :
                 <table>
                     <thead>
                         <tr>
@@ -78,6 +104,7 @@ class Exercise extends React.Component {
                         { this.renderTable()}
                     </tbody>
                 </table>
+                }
             </div>
         )
     }
@@ -93,6 +120,8 @@ const mapStateToProps = ({ exercise, authorized }) => {
     return { exercise, authorized }
 }
 
-export default connect(mapStateToProps, { getAllUserExercise,
+const ExerciseConnect = connect(mapStateToProps, { getAllUserExercise,
     getGuestExercise,
     deleteUserExercise })(Exercise)
+
+export default connect(mapStateToProps)(ExerciseView)

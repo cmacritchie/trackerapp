@@ -7,16 +7,25 @@ import { getAllUserWeight,
         deleteUserWeight } from '../actions/weightActions'
 import moment from 'moment'
 
+const WeightView = ({authorized}) => {
 
+    if(authorized.loading) {
+        return <p>loading</p>
+    } else if(authorized.isAuthenticated){
+        return <WeightConnect guest={false} />
+    } else {
+        return <WeightConnect guest={true} />
+    }
+
+}
 
 class Weight extends React.Component {
 
     componentDidMount(){
-        const { getAllUserWeight, getGuestWeight, weight, authorized} = this.props
-        debugger;
-        if(!authorized.isAuthenticated) {
+        const { getAllUserWeight, getGuestWeight, weight, authorized, guest} = this.props
+        if(guest && !weight.weightLoaded) {
             getGuestWeight()
-        } else if(weight.weightList.length === 0 && !weight.weightLoaded) {
+        } else if(!weight.weightLoaded) {
             getAllUserWeight()
         }
     }
@@ -52,15 +61,26 @@ class Weight extends React.Component {
     }
 
     render() {
-        const { authorized } = this.props;
+        const { authorized, weight } = this.props;
+
+        if(!weight.weightLoaded) {
+            return <p>loading</p>
+        }
+
         return (
             <div>
-                {authorized.isAuthenticated && 
+                <br />
+                { authorized.isAuthenticated && 
                 <NavLink to="/weight/entry">
                     <button className="btn waves-effect waves-light" type="button">
                         New Entry
                     </button>
                 </NavLink>}
+
+                { weight.weightList.length === 0 ? 
+                
+                <p>No Weight Entries </p>
+                :
                 <table>
                     <thead>
                         <tr>
@@ -77,6 +97,7 @@ class Weight extends React.Component {
                         {this.renderTable()}
                     </tbody>
                 </table>
+                }
             </div>
         )
     }
@@ -92,7 +113,9 @@ const mapStateToProps = ({ weight, authorized }) => {
     return { weight, authorized }
 }
 
-export default connect(mapStateToProps, 
+const WeightConnect = connect(mapStateToProps, 
     {getAllUserWeight,
     getGuestWeight,
     deleteUserWeight})(Weight)
+
+export default connect(mapStateToProps)(WeightView)

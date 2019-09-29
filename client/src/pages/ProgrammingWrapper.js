@@ -33,7 +33,6 @@ class ProgrammingWrapper extends Component {
                 })
             })
             .catch(error => {
-                debugger;
                 this.setState({
                     isLoaded: true,
                     error,

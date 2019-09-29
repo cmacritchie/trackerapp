@@ -18,7 +18,6 @@ export const createExerciseEntry = entry => async dispatch => {
     try {
         const res = await axios.post('/api/exercise', entry)
 
-        debugger;
         dispatch({
             type:EXERCISE_CREATE,
             payload: res.data 
@@ -33,14 +32,13 @@ export const createExerciseEntry = entry => async dispatch => {
 }
 
 export const updateExerciseEntry = entry => async dispatch => {
-    debugger;
+
     const { authorized } = store.getState();
     axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}` 
     
     try {
         const res = await axios.patch(`/api/exercise/${entry._id}`, entry)
 
-        debugger;
         dispatch({
             type:EXERCISE_UPDATE,
             payload: res.data 

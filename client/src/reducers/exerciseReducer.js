@@ -61,7 +61,6 @@ export default function(state = initialState, action) {
             }
         case EXERCISE_INITIAL_STATE:
             return initialState;
-        
         default:
             return state
     }
