@@ -54,7 +54,7 @@ router.get('/api/programming/:id', auth, async (req, res) => {
     const _id = req.params.id
 
     try {
-        const programming = await Programming.findById(_id)
+        const programming = await Programming.findOne({ _id, owner:req.user._id})
 
         if(!programming) {
             return res.status(404).send()
@@ -67,9 +67,9 @@ router.get('/api/programming/:id', auth, async (req, res) => {
 })
 
 router.patch('/api/programming/:id', auth, async (req, res) => {
-    
+    delete req.body._id
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['language', 'duration', 'date', 'description']
+    const allowedUpdates = ['framework', 'duration', 'date', 'description']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if(!isValidOperation){
@@ -77,7 +77,7 @@ router.patch('/api/programming/:id', auth, async (req, res) => {
     }
 
     try {
-        const programming = await Programming.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true})
+        const programming = await Programming.findOneAndUpdate({_id:req.params.id, owner: req.user._id}, req.body, { new: true, runValidators: true})
 
         if(!programming) {
             return res.status(404).send()
@@ -100,6 +100,33 @@ router.delete('/api/programming/:id', auth, async (req, res) => {
 
         res.send(programming)
     } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// router.get('/api/programming/distinct', async (req, res) => {
+//     console.log('We are in')
+//     try {
+//         // console.log('router distinct')
+//         // const values = await Programming.distinct('framework', function(error, ids) {
+//         //     console.log(ids)
+//         // })
+//         // console.log('values')
+//         // res.send(values)
+
+//         res.send({'test':'test'})
+//     } catch (e) {
+//         console.log('problem')
+//         res.status(500).send()
+//     }
+// })
+
+router.get('/api/programmingdistinct', async (req, res) => {
+    try {
+        // const programming = await Programming.find({})
+        const values = await Programming.distinct('framework')
+        res.send(values) 
+    } catch(e) {
         res.status(500).send()
     }
 })

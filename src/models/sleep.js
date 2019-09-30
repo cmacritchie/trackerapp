@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Sleep = mongoose.model('Sleep', new mongoose.Schema({ 
+const sleepSchema = new mongoose.Schema({ 
     date: {
         type: Date,
         required: true
@@ -21,8 +21,14 @@ const Sleep = mongoose.model('Sleep', new mongoose.Schema({
 },
 {
  timestamps: true 
-}))
+})
 
-//add virtual for sleep time
+sleepSchema.set('toObject', { virtuals: true })
+sleepSchema.set('toJSON', { virtuals: true })
 
-module.exports = Sleep
+sleepSchema.virtual('duration')
+.get(function(){
+    return (this.up + 24) - this.down;
+})
+
+module.exports = mongoose.model ('Sleep', sleepSchema)

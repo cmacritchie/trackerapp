@@ -66,7 +66,7 @@ router.get('/api/users/me', auth, async (req, res) => {
 
 router.get('/api/users/guest', async (req, res) => {
     try{
-        const user = await User.findOne({ name:'craig MacRitchie' }) 
+        const user = await User.findOne({ name:'Craig MacRitchie' }) 
 
         if(!user) {
             res.status(404).send({error: "guest user not Found!"})

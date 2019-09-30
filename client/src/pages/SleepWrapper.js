@@ -1,19 +1,19 @@
-import React, { Component, Fragment } from 'react'
-import ExerciseEntry  from './ExerciseEntry'
-import { Redirect } from 'react-router-dom'
-import axios from 'axios'
+import React, { Component, Fragment} from 'react'
+import SleepEntry from './SleepEntry';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createExerciseEntry, updateExerciseEntry } from '../actions/exerciseActions'
+import { createSleepEntry, updateSleepEntry } from '../actions/sleepActions'
 
-
-class ExerciseWrapper extends Component {
+class SleepWrapper extends Component {
+    
     constructor(props) {
-    super(props)
+        super(props) 
         this.state = {
             isLoaded:false,
             error: null,
-            exerciseItem:{},
+            sleepItem:{},
             isEditItem:false
         }
     }
@@ -21,14 +21,15 @@ class ExerciseWrapper extends Component {
     componentDidMount() {
         const { authorized, match } = this.props
         const { params } = match
+        debugger;
         if(authorized.isAuthenticated) {
             if(Object.keys(params).length > 0) {
                 axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
-                axios.get(`/api/exercise/${params.entryId}`)
+                axios.get(`/api/sleep/${params.entryId}`)
                 .then(res => {
                     this.setState({
                         isLoaded:true,
-                        exerciseItem: res.data,
+                        sleepItem: res.data,
                         isEditItem: true
                     })
                 })
@@ -50,39 +51,40 @@ class ExerciseWrapper extends Component {
     
     }
 
-    render(){
-        const { isLoaded, isEditItem, exerciseItem, error } = this.state;
-        const { createExerciseEntry, updateExerciseEntry, authorized } = this.props
+    render() {
+        const { isLoaded, isEditItem, sleepItem, error } = this.state;
+        const { createSleepEntry, updateSleepEntry, authorized } = this.props
         if(!authorized.isAuthenticated){
-        return <Redirect to="/exercise" />
+        return <Redirect to="/sleep" />
         } else if (error) {
         return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
         return <div>Loading...</div>;
         } else if (!isEditItem) {
         return (
-            <ExerciseEntry onSubmit={(item) => createExerciseEntry(item) } />
+            <SleepEntry onSubmit={(item) => createSleepEntry(item) } />
         );
         } else {
             return (
-                <ExerciseEntry onSubmit={(item) => updateExerciseEntry(item) }
-                                  editItem={exerciseItem} />
+                <SleepEntry onSubmit={(item) => updateSleepEntry(item) }
+                                  editItem={sleepItem} />
             )
         }
          
     }
+    
 }
 
-ExerciseWrapper.propTypes = {
-    createExerciseEntry: PropTypes.func.isRequired,
-    updateExerciseEntry: PropTypes.func.isRequired
+SleepWrapper.propTypes = {
+    createSleepEntry: PropTypes.func.isRequired,
+    updateSleepEntry: PropTypes.func.isRequired
 };
 
-const ExerciseEntryView = ({authorized, match}) => {
+const SleepEntryView = ({authorized, match}) => {
     if(authorized.loading) {
         return <p>loading</p>
     } else {
-        return <ExerciseWrapperConnect match={match} />
+        return <SleepWrapperConnect match={match} />
     }
 }
 
@@ -90,7 +92,7 @@ const mapStatetoProps =({ authorized }) => {
     return { authorized }
 }
 
-const ExerciseWrapperConnect = connect(mapStatetoProps,
-  { createExerciseEntry, updateExerciseEntry })(ExerciseWrapper)
+const SleepWrapperConnect = connect(mapStatetoProps, 
+    { createSleepEntry, updateSleepEntry })(SleepWrapper)
 
-export default connect(mapStatetoProps)(ExerciseEntryView)
+export default connect(mapStatetoProps)(SleepEntryView)

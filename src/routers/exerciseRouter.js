@@ -39,10 +39,10 @@ router.get('/api/exercise/me', auth, async (req, res) => {
 
 router.get('/api/exercise/:id', auth, async (req, res) => {
     const _id = req.params.id
-
+    
     try {
-        const exercise = await Exercise.findById(_id)
-
+        const exercise = await Exercise.findOne({ _id, owner:req.user._id})
+        
         if(!exercise) {
             return res.status(404).send()
         }
@@ -56,7 +56,7 @@ router.get('/api/exercise/:id', auth, async (req, res) => {
 router.patch('/api/exercise/:id', auth, async (req, res)=> {
     delete req.body._id
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['description', 'duration', 'detail', 'date']
+    const allowedUpdates = ['type', 'date', 'detail', 'startTime', 'endTime']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if(!isValidOperation) {
@@ -64,8 +64,8 @@ router.patch('/api/exercise/:id', auth, async (req, res)=> {
     }
 
     try {
-        const exercise = await Exercise.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true})
-        
+        const exercise = await Exercise.findOneAndUpdate({ _id:req.params.id, owner:req.user._id}, req.body, { new: true, runValidators: true})
+
         if(!exercise) {
             return res.status(404).send()
         }
@@ -80,7 +80,7 @@ router.patch('/api/exercise/:id', auth, async (req, res)=> {
 router.delete('/api/exercise/:id', auth, async (req, res) => {
     try {
         const exercise = await Exercise.findOneAndDelete({ _id: req.params.id, owner: req.user._id})
-        
+
         if(!exercise) {
             res.status(404).send()
         }

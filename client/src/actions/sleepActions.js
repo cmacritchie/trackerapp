@@ -74,7 +74,7 @@ export const deleteUserSleep = (id) => async dispatch => {
     axios.defaults.headers.common['Authorization'] =`Bearer ${store.getState().authorized.token}`
 
     try{
-        const res = await axios.delete(`/api/programming/${id}`)
+        const res = await axios.delete(`/api/sleep/${id}`)
 
         dispatch({
             type: SLEEP_DELETE,

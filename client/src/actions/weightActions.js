@@ -74,7 +74,7 @@ export const deleteUserWeight = (id) => async dispatch => {
     axios.defaults.headers.common['Authorization'] =`Bearer ${store.getState().authorized.token}`
 
     try{
-        const res = await axios.delete(`/api/programming/${id}`)
+        const res = await axios.delete(`/api/weight/${id}`)
 
         dispatch({
             type: WEIGHT_DELETE,

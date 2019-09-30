@@ -37,7 +37,7 @@ class Weight extends React.Component {
             
             return(
                 <tr key={item._id} >
-                    <td>{item.value}</td>
+                    <td>{item.weight}</td>
                     <td>{moment(item.date).format('MM/DD/YYYY')}</td>
                     { authorized.isAuthenticated && 
                     <Fragment>

@@ -18,14 +18,14 @@ router.post('/api/weight', auth, async (req, res) => {
     }
 })
 
-router.get('/api/weight', async (req, res) => {
-    try {
-        const weights = await Weight.find({})
-        res.send(weights)
-    } catch(e) {
-        res.status(500).send()
-    }
-})
+// router.get('/api/weight', async (req, res) => {
+//     try {
+//         const weights = await Weight.find({})
+//         res.send(weights)
+//     } catch(e) {
+//         res.status(500).send()
+//     }
+// })
 
 //add to postman
 router.get('/api/weight/guest', async (req, res) => {
@@ -53,7 +53,7 @@ router.get('/api/weight/:id', auth, async (req, res) => {
     const _id = req.params.id
     
     try {
-        const weight = await Weight.findById(_id)
+        const weight = await Weight.findOne({ _id, owner:req.user._id})
 
         if(!weight) {
             return res.status(404).send()
@@ -66,8 +66,9 @@ router.get('/api/weight/:id', auth, async (req, res) => {
 })
 
 router.patch('/api/weight/:id', auth, async (req, res)=> {
+    delete req.body._id
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['value', 'date']
+    const allowedUpdates = ['weight', 'date']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if(!isValidOperation){
@@ -75,7 +76,7 @@ router.patch('/api/weight/:id', auth, async (req, res)=> {
     }
 
     try {
-        const weight = await Weight.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true})
+        const weight = await Weight.findOneAndUpdate({ _id:req.params.id, owner:req.user._id}, req.body, { new: true, runValidators: true})
         
         if (!weight) {
             return res.status(404).send()
@@ -89,6 +90,8 @@ router.patch('/api/weight/:id', auth, async (req, res)=> {
 
 //delete add to postman
 router.delete('/api/weight/:id', auth, async (req, res) => {
+    console.log('reggads')
+    console.log(req)
     try {
         const weight = await Weight.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 

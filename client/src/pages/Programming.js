@@ -37,7 +37,7 @@ class Programming extends React.Component {
 
             return (
                 <tr key={item._id} >
-                    <td>{item.language}</td>
+                    <td>{item.framework}</td>
                     <td>{item.duration}</td>
                     <td>{item.description}</td>
                     <td>{moment(item.date).format('MM/DD/YYYY')}</td>

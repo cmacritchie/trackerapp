@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createProgrammingEntry, updateProgrammingEntry } from '../actions/programmingActions'
 
+
 class ProgrammingWrapper extends Component {
 
     constructor(props) {
@@ -14,44 +15,44 @@ class ProgrammingWrapper extends Component {
             isLoaded:false,
             error: null,
             programmingItem:{},
-            isEditItem:false
+            isEditItem:false,
+            previouslySelected:[]
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { authorized, match } = this.props
         const { params } = match
-        
-        if(Object.keys(params).length > 0) {
-            axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
-            axios.get(`/api/programming/${params.entryId}`)
-            .then(res => {
+        let apiCalls =[]
+        axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
+
+        if(authorized.isAuthenticated) {
+            if(Object.keys(params).length > 0) {
+                const [editItem, distinct] = await Promise.all([
+                    axios.get(`/api/programming/${params.entryId}`),
+                    axios.get('/api/programmingdistinct')
+                ])
                 this.setState({
-                    isLoaded:true,
-                    programmingItem: res.data,
-                    isEditItem: true
-                })
-            })
-            .catch(error => {
+                                isLoaded: true,
+                                programmingItem:editItem.data,
+                                isEditItem:true,
+                                previouslySelected:distinct.data
+                            })
+            } else {
+                const distinct = await axios.get('/api/programmingdistinct')
                 this.setState({
                     isLoaded: true,
-                    error,
-                    isEditItem:false
+                    isEditItem:false,
+                    previouslySelected:distinct.data
                 })
-                }
-            )
-        } else {
-            this.setState({
-                isLoaded:true,
-                isEditItem: false
-            })
-        }
-    
+            }
+        } 
     }
 
     render(){
-        const { isLoaded, isEditItem, programmingItem, error } = this.state;
+        const { isLoaded, isEditItem, programmingItem, error, previouslySelected } = this.state;
         const { createProgrammingEntry, updateProgrammingEntry, authorized } = this.props
+        
         if(!authorized.isAuthenticated){
         return <Redirect to="/programming" />
         } else if (error) {
@@ -60,29 +61,39 @@ class ProgrammingWrapper extends Component {
         return <div>Loading...</div>;
         } else if (!isEditItem) {
         return (
-            <ProgrammingEntry onsubmit={(item) => createProgrammingEntry(item) } />
+            <ProgrammingEntry onsubmit={(item) => createProgrammingEntry(item) }
+                                previouslySelected={previouslySelected} />
         );
         } else {
             return (
                 <ProgrammingEntry onsubmit={(item) => updateProgrammingEntry(item) }
-                                  editItem={programmingItem} />
+                                  editItem={programmingItem}
+                                  previouslySelected={previouslySelected} />
             )
         }
-        
-        
+         
     }
-
     
 }
 
 ProgrammingWrapper.propTypes = {
     createProgrammingEntry: PropTypes.func.isRequired,
     updateProgrammingEntry: PropTypes.func.isRequired
-  };
+};
+
+const ProgrammingEntryView = ({authorized, match}) => {
+    if(authorized.loading) {
+        return <p>loading</p>
+    } else {
+        return <ProgrammingWrapperConnect match={match} />
+    }
+}
 
 const mapStatetoProps =({ authorized }) => {
     return { authorized }
 }
 
-export default connect(mapStatetoProps, 
+const ProgrammingWrapperConnect = connect(mapStatetoProps, 
                     { createProgrammingEntry, updateProgrammingEntry })(ProgrammingWrapper)
+
+export default connect(mapStatetoProps)(ProgrammingEntryView)

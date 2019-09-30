@@ -2,18 +2,22 @@ const mongoose = require('mongoose')
 
 //change to date time, set up a virtual
 
-const Exercise = mongoose.model('Exercise', new mongoose.Schema({
-    description: {
+const exerciseSchema =  new mongoose.Schema({
+    type: {
         type: String,
-        required:true
-    },
-    duration: {
-        type: Number,
         required:true
     },
     detail: {
         type: String,
         required: false
+    },
+    startTime: {
+        type: Number,
+        required: true
+    },
+    endTime: {
+        type: Number,
+        required: true
     },
     date: {
         type: Date,
@@ -27,6 +31,16 @@ const Exercise = mongoose.model('Exercise', new mongoose.Schema({
 },
 {
      timestamps: true 
-}))
+})
 
-module.exports = Exercise
+exerciseSchema.set('toObject', { virtuals: true })
+exerciseSchema.set('toJSON', { virtuals: true })
+
+exerciseSchema.virtual('duration')
+.get(function(){
+    return this.endTime - this.startTime;
+})
+
+
+
+module.exports = mongoose.model('Exercise', exerciseSchema)

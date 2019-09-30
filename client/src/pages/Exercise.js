@@ -38,10 +38,9 @@ class Exercise extends React.Component {
         const { exerciseList } = exercise
 
         return exerciseList.map(item => {
-            
             return (
                 <tr key={item._id} >
-                    <td>{item.description}</td>
+                    <td>{item.type}</td>
                     <td>{item.detail}</td>
                     <td>{item.duration}</td>
                     <td>{moment(item.date).format('MM/DD/YYYY')}</td>

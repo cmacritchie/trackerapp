@@ -39,7 +39,7 @@ class Sleep extends React.Component {
                 <tr key={item._id}>
                     <td>{item.down}</td>
                     <td>{item.up}</td>
-                    <td>total Hours</td>
+                    <td>{item.duration}</td>
                     <td>{moment(item.date).format('MM/DD/YYYY')}</td>
                     { authorized.isAuthenticated && 
                     <Fragment>

@@ -10,9 +10,10 @@ class ExerciseEntry extends Component {
 
         this.state ={
             exerciseEntry: {
-                description: '',
-                duration: '',
+                type: '',
                 detail: '',
+                startTime: '',
+                endTime:'',
                 date:moment().format('YYYY-MM-DD'),
             }
         }
@@ -21,13 +22,14 @@ class ExerciseEntry extends Component {
     componentDidMount() {
         const { editItem } = this.props
         if(editItem){
-            const { description, duration, detail, _id } = editItem
+            const { type, startTime, endTime, detail, _id } = editItem
             const date = new Date(editItem.date)
             this.setState({
                 exerciseEntry: {
-                    description,
-                    duration,
+                    type,
                     detail,
+                    startTime,
+                    endTime,
                     date,
                     _id
                 }
@@ -58,26 +60,33 @@ class ExerciseEntry extends Component {
                 <form className='form' onSubmit={this.submitEntry}>
                     <input
                         type='text'
-                        placeholder ='description'
-                        name='description'
-                        value = {this.state.exerciseEntry.description}
-                        onChange = {this.handleEntryChange('description')}
+                        placeholder ='exercise Type'
+                        name='type'
+                        value = {this.state.exerciseEntry.type}
+                        onChange = {this.handleEntryChange('type')}
                         required
                         />
                         <input
                         type='text'
-                        placeholder ='detail'
+                        placeholder ='exercise detail (optional)'
                         name='detail'
                         value = {this.state.exerciseEntry.detail}
                         onChange = {this.handleEntryChange('detail')}
+                        />
+                    <input
+                        type='number'
+                        placeholder ='start time (24 hour input)'
+                        name='startTime'
+                        value = {this.state.exerciseEntry.startTime}
+                        onChange = {this.handleEntryChange('startTime')}
                         required
                         />
                     <input
                         type='number'
-                        placeholder ='duration in minutes'
-                        name='duration'
-                        value = {this.state.exerciseEntry.duration}
-                        onChange = {this.handleEntryChange('duration')}
+                        placeholder ='end time (24 hour input)'
+                        name='endTime'
+                        value = {this.state.exerciseEntry.endTime}
+                        onChange = {this.handleEntryChange('endTime')}
                         required
                         />
                     <input
@@ -87,6 +96,7 @@ class ExerciseEntry extends Component {
                         onChange = {this.handleEntryChange('date')}
                         required
                         />
+                        <input type="submit" className='btn btn-primary' value='Submit' />
                 </form>
             </Fragment>
         )

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const Programming = mongoose.model('Programming', new mongoose.Schema({
-    language: {
+    framework: {
         type: String,
         required: true,
         trim: true

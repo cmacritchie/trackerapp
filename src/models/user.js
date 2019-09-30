@@ -38,20 +38,6 @@ const userSchema = new mongoose.Schema({
         type: Date,
         require: false
     },
-    // excercise: [{
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Excercise',
-    //     localField: '_id',
-    //     foreignField: 'owner'
-    // }],
-    // programmings: [{
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Programming',
-    //     localField: '_id',
-    //     foreignField: 'owner'
-    // }],
-    // sleep: [{type: mongoose.Schema.Types.ObjectId, ref: 'Sleep'}],
-    // weight: [{type: mongoose.Schema.Types.ObjectId, ref: 'Weight'}],
     tokens: [{
         token: {
             type: String,

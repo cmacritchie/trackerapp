@@ -1,19 +1,19 @@
-import React, { Component, Fragment } from 'react'
-import ExerciseEntry  from './ExerciseEntry'
-import { Redirect } from 'react-router-dom'
-import axios from 'axios'
+import React, { Component, Fragment} from 'react'
+import WeightEntry from './WeightEntry';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createExerciseEntry, updateExerciseEntry } from '../actions/exerciseActions'
+import { createWeightEntry, updateWeightEntry } from '../actions/weightActions'
 
-
-class ExerciseWrapper extends Component {
+class WeightWrapper extends Component {
+    
     constructor(props) {
-    super(props)
+        super(props) 
         this.state = {
             isLoaded:false,
             error: null,
-            exerciseItem:{},
+            weightItem:{},
             isEditItem:false
         }
     }
@@ -24,11 +24,11 @@ class ExerciseWrapper extends Component {
         if(authorized.isAuthenticated) {
             if(Object.keys(params).length > 0) {
                 axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
-                axios.get(`/api/exercise/${params.entryId}`)
+                axios.get(`/api/weight/${params.entryId}`)
                 .then(res => {
                     this.setState({
                         isLoaded:true,
-                        exerciseItem: res.data,
+                        weightItem: res.data,
                         isEditItem: true
                     })
                 })
@@ -50,39 +50,40 @@ class ExerciseWrapper extends Component {
     
     }
 
-    render(){
-        const { isLoaded, isEditItem, exerciseItem, error } = this.state;
-        const { createExerciseEntry, updateExerciseEntry, authorized } = this.props
+    render() {
+        const { isLoaded, isEditItem, weightItem, error } = this.state;
+        const { createWeightEntry, updateWeightEntry, authorized } = this.props
         if(!authorized.isAuthenticated){
-        return <Redirect to="/exercise" />
+        return <Redirect to="/weight" />
         } else if (error) {
         return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
         return <div>Loading...</div>;
         } else if (!isEditItem) {
         return (
-            <ExerciseEntry onSubmit={(item) => createExerciseEntry(item) } />
+            <WeightEntry onSubmit={(item) => createWeightEntry(item) } />
         );
         } else {
             return (
-                <ExerciseEntry onSubmit={(item) => updateExerciseEntry(item) }
-                                  editItem={exerciseItem} />
+                <WeightEntry onSubmit={(item) => updateWeightEntry(item) }
+                                  editItem={weightItem} />
             )
         }
          
     }
+    
 }
 
-ExerciseWrapper.propTypes = {
-    createExerciseEntry: PropTypes.func.isRequired,
-    updateExerciseEntry: PropTypes.func.isRequired
+WeightWrapper.propTypes = {
+    createWeightEntry: PropTypes.func.isRequired,
+    updateWeightEntry: PropTypes.func.isRequired
 };
 
-const ExerciseEntryView = ({authorized, match}) => {
+const WeightEntryView = ({authorized, match}) => {
     if(authorized.loading) {
         return <p>loading</p>
     } else {
-        return <ExerciseWrapperConnect match={match} />
+        return <WeightWrapperConnect match={match} />
     }
 }
 
@@ -90,7 +91,7 @@ const mapStatetoProps =({ authorized }) => {
     return { authorized }
 }
 
-const ExerciseWrapperConnect = connect(mapStatetoProps,
-  { createExerciseEntry, updateExerciseEntry })(ExerciseWrapper)
+const WeightWrapperConnect = connect(mapStatetoProps, 
+    { createWeightEntry, updateWeightEntry })(WeightWrapper)
 
-export default connect(mapStatetoProps)(ExerciseEntryView)
+export default connect(mapStatetoProps)(WeightEntryView)

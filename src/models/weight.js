@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const Weight = mongoose.model('Weight', new mongoose.Schema({
-    value: {
+    weight: {
         type: Number,
         required: true
     },
