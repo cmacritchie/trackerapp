@@ -1,16 +1,21 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
 
 const sleepSchema = new mongoose.Schema({ 
-    date: {
+    fallAsleepDate: {
         type: Date,
         required: true
     },
-    down: {
-        type: Number,
+    fallAsleepTime: {
+        type: String,
         required: true
     },
-    up: {
-        type: Number,
+    wakeUpDate: {
+        type: Date,
+        required: true
+    },
+    wakeUpTime: {
+        type: String,
         required: true
     },
     owner: {
@@ -26,9 +31,42 @@ const sleepSchema = new mongoose.Schema({
 sleepSchema.set('toObject', { virtuals: true })
 sleepSchema.set('toJSON', { virtuals: true })
 
+sleepSchema.virtual('sleepStart')
+.get(function(){
+    const fallAsleepTime = moment(this.fallAsleepTime, 'h:mm a')
+
+    return moment(this.fallAsleepDate).set({
+        'hour':fallAsleepTime.get('hour'),
+        'minute':fallAsleepTime.get('minute')
+    }).format('dddd, MMMM Do YYYY, h:mm:ss a')
+})
+
+sleepSchema.virtual('sleepEnd')
+.get(function(){
+    const wakeUpTime = moment(this.wakeUpTime, 'h:mm a')
+
+    return moment(this.wakeUpDate).set({
+        'hour':wakeUpTime.get('hour'),
+        'minute':wakeUpTime.get('minute')
+    }).format('dddd, MMMM Do YYYY, h:mm:ss a') 
+})
+
 sleepSchema.virtual('duration')
 .get(function(){
-    return (this.up + 24) - this.down;
+    const wakeUpTime = moment(this.wakeUpTime, 'h:mm a')
+
+    const wakeDateTime = moment(this.wakeUpDate).set({
+        'hour':wakeUpTime.get('hour'),
+        'minute':wakeUpTime.get('minute')
+    })
+
+    const fallAsleepTime = moment(this.fallAsleepTime, 'h:mm a')
+
+    const sleepDateTime = moment(this.fallAsleepDate).set({
+        'hour':fallAsleepTime.get('hour'),
+        'minute':fallAsleepTime.get('minute')
+    })
+    return wakeDateTime.diff(sleepDateTime, 'minutes');
 })
 
 module.exports = mongoose.model ('Sleep', sleepSchema)

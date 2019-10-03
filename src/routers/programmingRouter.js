@@ -121,7 +121,7 @@ router.delete('/api/programming/:id', auth, async (req, res) => {
 //     }
 // })
 
-router.get('/api/programmingdistinct', async (req, res) => {
+router.get('/api/programmingdistinct', auth, async (req, res) => {
     try {
         // const programming = await Programming.find({})
         const values = await Programming.distinct('framework')

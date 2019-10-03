@@ -71,7 +71,6 @@ class Register extends Component {
         let submitFlag = this.validation(userCredentials)
         
         if(submitFlag) {
-        delete userCredentials.confirmPassword;
         this.props.register(userCredentials);
         }
         
@@ -125,7 +124,7 @@ class Register extends Component {
                         <input  
                             type='password'
                             placeholder ='confirm password'
-                            name='password'
+                            name='confirm password'
                             value={this.state.userCredentials.confirmPassword}
                             onChange={this.handleCredentialChange('confirmPassword')}
                             required

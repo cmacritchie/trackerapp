@@ -23,7 +23,6 @@ class ProgrammingWrapper extends Component {
     async componentDidMount() {
         const { authorized, match } = this.props
         const { params } = match
-        let apiCalls =[]
         axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
 
         if(authorized.isAuthenticated) {

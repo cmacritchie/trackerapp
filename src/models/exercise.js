@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
 
 //change to date time, set up a virtual
 
@@ -12,11 +13,11 @@ const exerciseSchema =  new mongoose.Schema({
         required: false
     },
     startTime: {
-        type: Number,
+        type: String,
         required: true
     },
     endTime: {
-        type: Number,
+        type: String,
         required: true
     },
     date: {
@@ -38,7 +39,13 @@ exerciseSchema.set('toJSON', { virtuals: true })
 
 exerciseSchema.virtual('duration')
 .get(function(){
-    return this.endTime - this.startTime;
+
+    const startTime = moment(this.startTime, 'h:mm a');
+    const endTime = moment(this.endTime, 'h:mm a');
+    const mins = endTime.diff(startTime, 'minutes');
+    const h = mins / 60 | 0,
+        m = mins % 60 | 0;
+    return moment.utc().hours(h).minutes(m).format("h:mm ");
 })
 
 

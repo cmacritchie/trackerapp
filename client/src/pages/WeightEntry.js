@@ -1,17 +1,18 @@
 import React, { Fragment, Component } from 'react'
 import moment from 'moment'
-
+import { DatePicker } from "react-materialize";
 class SleepEntry extends Component {
 
     constructor(props) {
         super(props)
         this.handleEntryChange = this.handleEntryChange.bind(this)
         this.submitEntry = this.submitEntry.bind(this)
+        this.setDate = this.setDate.bind(this)
 
         this.state = {
             weightEntry: {
                 weight: '',
-                date:moment().format('YYYY-MM-DD'),
+                date:new Date(),
             }
         }
     }
@@ -40,6 +41,15 @@ class SleepEntry extends Component {
         this.setState({ weightEntry: updateEntry });
     }
 
+    setDate = (date) => {
+        const { weightEntry } = this.state
+        let updateEntry = {
+            ...weightEntry,
+            date
+        }
+        this.setState({...this.state, weightEntry:updateEntry})
+    }
+
     submitEntry = event => {
         event.preventDefault()
         const { weightEntry } = this.state;
@@ -60,14 +70,13 @@ class SleepEntry extends Component {
                         value = {this.state.weightEntry.weight}
                         onChange = {this.handleEntryChange('weight')}
                         required
-                        />  
-                    <input
-                        type='date'
-                        name='date'
-                        value = {moment(this.state.weightEntry.date).format('YYYY-MM-DD')}
-                        onChange = {this.handleEntryChange('date')}
-                        required
-                        />  
+                        />
+                    <DatePicker
+                            required
+                            name='date'
+                            value={moment(this.state.weightEntry.date).format('MMM DD, YYYY')}
+                            onChange={date => this.setDate(date)}
+                            />  
                     <input type="submit" className='btn btn-primary' value='Submit' />
                 </form>
             </Fragment>

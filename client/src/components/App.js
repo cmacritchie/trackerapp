@@ -16,6 +16,8 @@ import SleepWrapper from '../pages/SleepWrapper';
 import Weight from '../pages/Weight'
 import WeightWrapper from '../pages/WeightWrapper';
 import { store } from '../index';
+import "materialize-css/dist/css/materialize.min.css";
+import "materialize-css/dist/js/materialize.min.js";
 
 export const history = createBrowserHistory()
 

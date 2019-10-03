@@ -18,14 +18,14 @@ router.post('/api/sleep', auth, async (req, res) => {
     }
 })
 
-// router.get('/api/sleep', async (req, res) => {
-//     try {
-//         const sleep = await Sleep.find({})
-//         res.send(sleep)
-//     } catch(e) { 
-//         res.status(500).send()
-//     }
-// })
+router.get('/api/sleep', async (req, res) => {
+    try {
+        const sleep = await Sleep.find({})
+        res.send(sleep)
+    } catch(e) { 
+        res.status(500).send()
+    }
+})
 
 router.get('/api/sleep/guest', async (req, res) => {
 
@@ -69,7 +69,7 @@ router.get('/api/sleep/:id', auth, async (req, res) => {
 router.patch('/api/sleep/:id', auth, async (req, res) => {
     delete req.body._id
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['date', 'down', 'up']
+    const allowedUpdates = ['fallAsleepDate', 'fallAsleepTime', 'wakeUpDate', 'wakeUpTime']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if(!isValidOperation){

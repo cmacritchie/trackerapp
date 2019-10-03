@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react'
 import moment from 'moment'
+import { DatePicker } from "react-materialize";
 
 class ProgrammingEntry extends Component {
 
@@ -7,12 +8,13 @@ class ProgrammingEntry extends Component {
         super(props)
         this.handleEntryChange = this.handleEntryChange.bind(this)
         this.submitEntry = this.submitEntry.bind(this)
+        this.setDate = this.setDate.bind(this)
 
         this.state = {
             programmingEntry: {
                 framework: '',
                 duration:'',
-                date:moment().format('YYYY-MM-DD'),
+                date:new Date(),
                 description:''
             }
         }
@@ -42,6 +44,15 @@ class ProgrammingEntry extends Component {
             [propertyName]: event.target.value
         };
         this.setState({ programmingEntry: updateEntry });
+    }
+
+    setDate = (date) => {
+        const { programmingEntry } = this.state
+        let updateEntry = {
+            ...programmingEntry,
+            date
+        }
+        this.setState({...this.state, programmingEntry:updateEntry})
     }
 
     submitEntry = event => {
@@ -95,17 +106,6 @@ class ProgrammingEntry extends Component {
                     <div className="row">
                         <div className="col s12">
                             <input
-                                type='date'
-                                name='date'
-                                value = {moment(this.state.programmingEntry.date).format('YYYY-MM-DD')}
-                                onChange = {this.handleEntryChange('date')}
-                                required
-                                />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col s12">
-                            <input
                                 type='text'
                                 placeholder ='description (optional)'
                                 name='description'
@@ -114,6 +114,17 @@ class ProgrammingEntry extends Component {
                                 />
                         </div>
                     </div>
+                    {/* <div className="row"> */}
+                        {/* <div className="col s12"> */}
+                        <label>Sleep Start Date</label>
+                        <DatePicker
+                                required
+                                name='date'
+                                value={moment(this.state.programmingEntry.date).format('MMM DD, YYYY')}
+                                onChange={date => this.setDate(date)}
+                                />
+                        {/* </div> */}
+                    {/* </div> */}
                     <div className="row">
                         <div className="col s12">
                             <input type="submit" className='btn btn-primary' value='Submit' />

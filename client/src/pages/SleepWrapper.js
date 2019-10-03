@@ -21,7 +21,7 @@ class SleepWrapper extends Component {
     componentDidMount() {
         const { authorized, match } = this.props
         const { params } = match
-        debugger;
+        
         if(authorized.isAuthenticated) {
             if(Object.keys(params).length > 0) {
                 axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`

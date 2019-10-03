@@ -14,36 +14,36 @@ class ExerciseWrapper extends Component {
             isLoaded:false,
             error: null,
             exerciseItem:{},
-            isEditItem:false
+            isEditItem:false,
+            previouslySelected:[]
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { authorized, match } = this.props
         const { params } = match
+        axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
+
         if(authorized.isAuthenticated) {
             if(Object.keys(params).length > 0) {
-                axios.defaults.headers.common['Authorization'] =`Bearer ${authorized.token}`
-                axios.get(`/api/exercise/${params.entryId}`)
-                .then(res => {
-                    this.setState({
-                        isLoaded:true,
-                        exerciseItem: res.data,
-                        isEditItem: true
-                    })
+                const [editItem, distinct] = await Promise.all([
+                    axios.get(`/api/exercise/${params.entryId}`),
+                    axios.get('/api/exercisedistinct')
+                ])
+               
+                this.setState({
+                    isLoaded: true,
+                    exerciseItem:editItem.data,
+                    isEditItem:true,
+                    previouslySelected:distinct.data
                 })
-                .catch(error => {
-                    this.setState({
-                        isLoaded: true,
-                        error,
-                        isEditItem:false
-                    })
-                    }
-                )
             } else {
+                const distinct = await axios.get('/api/programmingdistinct')
                 this.setState({
                     isLoaded:true,
-                    isEditItem: false
+                    isEditItem: false,
+                    previouslySelected: distinct.data
+
                 })
             }
         }
@@ -51,8 +51,9 @@ class ExerciseWrapper extends Component {
     }
 
     render(){
-        const { isLoaded, isEditItem, exerciseItem, error } = this.state;
+        const { isLoaded, isEditItem, exerciseItem, error, previouslySelected } = this.state;
         const { createExerciseEntry, updateExerciseEntry, authorized } = this.props
+        
         if(!authorized.isAuthenticated){
         return <Redirect to="/exercise" />
         } else if (error) {
@@ -61,12 +62,14 @@ class ExerciseWrapper extends Component {
         return <div>Loading...</div>;
         } else if (!isEditItem) {
         return (
-            <ExerciseEntry onSubmit={(item) => createExerciseEntry(item) } />
+            <ExerciseEntry onSubmit={(item) => createExerciseEntry(item) } 
+                            previouslySelected={previouslySelected}/>
         );
         } else {
             return (
                 <ExerciseEntry onSubmit={(item) => updateExerciseEntry(item) }
-                                  editItem={exerciseItem} />
+                                  editItem={exerciseItem} 
+                                  previouslySelected={previouslySelected}/>
             )
         }
          

@@ -4,11 +4,16 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
+const moment = require('moment')
+
 router.post('/api/exercise', auth, async (req, res) => {
     const exercise = new Exercise({
         ...req.body,
         owner: req.user._id
     })
+
+    console.log(exercise.startTime)
+    console.log(exercise.endTime)
 
     try {
         await exercise.save()
@@ -90,4 +95,16 @@ router.delete('/api/exercise/:id', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+//add to postman
+router.get('/api/exercisedistinct', auth, async (req, res) => {
+    try {
+        // const programming = await Programming.find({})
+        const values = await Exercise.distinct('type')
+        res.send(values) 
+    } catch(e) {
+        res.status(500).send()
+    }
+})
+
 module.exports = router
