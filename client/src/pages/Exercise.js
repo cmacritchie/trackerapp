@@ -42,8 +42,8 @@ class Exercise extends React.Component {
                 <tr key={item._id} >
                     <td>{item.type}</td>
                     <td>{item.detail}</td>
-                    <td>{item.duration}</td>
-                    <td>{moment(item.date).format('MM/DD/YYYY')}</td>
+                    <td>{moment.utc().startOf('day').add({ minutes: item.duration }).format('H:mm')}</td>
+                    <td>{moment(item.date).format('MMM DD, YYYY')}</td>
                     { authorized.isAuthenticated && 
                     <Fragment>
                         <td>

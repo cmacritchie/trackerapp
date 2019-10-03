@@ -42,10 +42,9 @@ exerciseSchema.virtual('duration')
 
     const startTime = moment(this.startTime, 'h:mm a');
     const endTime = moment(this.endTime, 'h:mm a');
-    const mins = endTime.diff(startTime, 'minutes');
-    const h = mins / 60 | 0,
-        m = mins % 60 | 0;
-    return moment.utc().hours(h).minutes(m).format("h:mm ");
+    return endTime.diff(startTime, 'minutes');
+    
+    
 })
 
 

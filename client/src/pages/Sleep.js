@@ -37,10 +37,10 @@ class Sleep extends React.Component {
         return sleepList.map(item => {
             return(
                 <tr key={item._id}>
-                    <td>{item.down}</td>
-                    <td>{item.up}</td>
-                    <td>{item.duration}</td>
-                    <td>{moment(item.date).format('MM/DD/YYYY')}</td>
+                    <td>{item.fallAsleepTime}</td>
+                    <td>{item.wakeUpTime}</td>
+                    <td>{moment.utc().startOf('day').add({ minutes: item.duration }).format('H:mm')}</td>
+                    <td>{moment(item.fallAsleepDate).format('MMM DD') + ' - ' + moment(item.wakeUpDate).format('MMM DD, YYYY')}</td>
                     { authorized.isAuthenticated && 
                     <Fragment>
                         <td>

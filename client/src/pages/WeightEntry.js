@@ -72,11 +72,11 @@ class SleepEntry extends Component {
                         required
                         />
                     <DatePicker
-                            required
-                            name='date'
-                            value={moment(this.state.weightEntry.date).format('MMM DD, YYYY')}
-                            onChange={date => this.setDate(date)}
-                            />  
+                        required
+                        name='date'
+                        value={moment(this.state.weightEntry.date).format('MMM DD, YYYY')}
+                        onChange={date => this.setDate(date)}
+                        />  
                     <input type="submit" className='btn btn-primary' value='Submit' />
                 </form>
             </Fragment>

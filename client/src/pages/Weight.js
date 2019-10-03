@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types';
+import WeightGraph from '../components/WeightGraph'
+
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getAllUserWeight,
@@ -38,7 +40,7 @@ class Weight extends React.Component {
             return(
                 <tr key={item._id} >
                     <td>{item.weight}</td>
-                    <td>{moment(item.date).format('MM/DD/YYYY')}</td>
+                    <td>{moment(item.date).format('MMM DD, YYYY')}</td>
                     { authorized.isAuthenticated && 
                     <Fragment>
                         <td>
@@ -60,8 +62,13 @@ class Weight extends React.Component {
         })
     }
 
+    renderGraph() {
+
+    }
+
     render() {
         const { authorized, weight } = this.props;
+        const { weightList } = weight
 
         if(!weight.weightLoaded) {
             return <p>loading</p>
@@ -81,22 +88,25 @@ class Weight extends React.Component {
                 
                 <p>No Weight Entries </p>
                 :
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Weight (lbs.)</th>
-                            <th>Date</th>
-                            { authorized.isAuthenticated && 
-                                <Fragment>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                </Fragment>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderTable()}
-                    </tbody>
-                </table>
+                <Fragment>
+                    <WeightGraph data={weightList} />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Weight (lbs.)</th>
+                                <th>Date</th>
+                                { authorized.isAuthenticated && 
+                                    <Fragment>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </Fragment>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderTable()}
+                        </tbody>
+                    </table>
+                </Fragment>
                 }
             </div>
         )

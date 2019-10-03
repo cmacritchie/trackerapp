@@ -38,9 +38,9 @@ class Programming extends React.Component {
             return (
                 <tr key={item._id} >
                     <td>{item.framework}</td>
-                    <td>{item.duration}</td>
+                    <td>{moment.utc().startOf('day').add({ minutes: item.duration }).format('H:mm')}</td>
                     <td>{item.description}</td>
-                    <td>{moment(item.date).format('MM/DD/YYYY')}</td>
+                    <td>{moment(item.date).format('MMM DD, YYYY')}</td>
                     { authorized.isAuthenticated &&  
                     <Fragment>
                         <td>
@@ -82,25 +82,28 @@ class Programming extends React.Component {
                  
                 <p>No Programming Entries</p>
                 :
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Language / Framework</th>
-                            <th>Duration</th>
-                            <th>Description</th>
-                            <th>Date</th>
+                <Fragment>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Language / Framework</th>
+                                <th>Duration</th>
+                                <th>Description</th>
+                                <th>Date</th>
 
-                            { authorized.isAuthenticated &&  
-                            <Fragment>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </Fragment> }                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderTable()}
-                    </tbody>
-                </table>
+                                { authorized.isAuthenticated &&  
+                                <Fragment>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </Fragment> }                           
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderTable()}
+                        </tbody>
+                    </table>
+                </Fragment>
                 }
             </div>
         )

@@ -42,7 +42,7 @@ router.get('/api/weight/guest', async (req, res) => {
 //add to postman
 router.get('/api/weight/me', auth, async (req, res) => {
     try {
-        const weight = await Weight.find({ owner: req.user._id })
+        const weight = await Weight.find({ owner: req.user._id }).sort({date: 1})
         res.send(weight)
     } catch (e) {
         res.status(500).send()
