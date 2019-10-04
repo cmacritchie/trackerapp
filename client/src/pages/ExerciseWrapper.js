@@ -38,7 +38,7 @@ class ExerciseWrapper extends Component {
                     previouslySelected:distinct.data
                 })
             } else {
-                const distinct = await axios.get('/api/programmingdistinct')
+                const distinct = await axios.get('/api/exercisedistinct')
                 this.setState({
                     isLoaded:true,
                     isEditItem: false,

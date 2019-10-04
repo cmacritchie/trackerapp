@@ -24,24 +24,29 @@ const WeightGraph = ({data}) => {
         return value;
     }
 
+
     return (
         <ResponsiveContainer width = '95%' height = {500}>
-        <ScatterChart >
-           
-        <XAxis
-            dataKey = 'time'
-            domain = {['auto', 'auto']}
-            name='time'
-            tickFormatter = {(unixTime) => moment(unixTime).format('MMM, YYYY')}
-            type = 'number'
-            />       
-        <YAxis type="number" dataKey="weight" name="weight" unit="lbs" />
-        <Tooltip
-            formatter={toolTipFormatter}
-          />
-        <Legend />
-        <Scatter name="weight" data={weightData} fill="#8884d8" line shape="cross" />
-      </ScatterChart>
+            <ScatterChart >
+                <XAxis
+                    dataKey = 'time'
+                    label = 'Date'
+                    domain = {['auto', 'auto']}
+                    name='time'
+                    tickFormatter = {(unixTime) => moment(unixTime).format('MMM, YYYY')}
+                    type = 'number'
+                    scale='time'
+                    />       
+                <YAxis 
+                    label={{ value: 'Weight (lbs)', angle: -90, position: 'insideLeft' }}
+                    type="number" 
+                    dataKey="weight" 
+                    name="weight" 
+                     />
+                <Tooltip formatter={toolTipFormatter} />
+                
+                <Scatter name="weight" data={weightData} fill="#8884d8" line shape="circle" />
+            </ScatterChart>
       </ResponsiveContainer>
     );
  

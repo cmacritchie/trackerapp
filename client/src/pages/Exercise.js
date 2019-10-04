@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types';
+import ExerciseGraph from '../components/ExerciseGraph';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getAllUserExercise,
@@ -66,6 +67,7 @@ class Exercise extends React.Component {
 
     render() {
         const { authorized, exercise } = this.props;
+        const { exerciseList } = exercise
        
         if(!exercise.exerciseLoaded){
             return <p>loading</p>
@@ -81,28 +83,31 @@ class Exercise extends React.Component {
                     </button>
                 </NavLink>}
                 
-                { exercise.exerciseList.length === 0 ?
+                { exerciseList.length === 0 ?
                 
                 <p>No Exercise Entries</p>
                 :
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Excercise Type</th>
-                            <th>Excercise detail</th>
-                            <th>Duration</th>
-                            <th>Date</th>
-                            { authorized.isAuthenticated &&
-                            <Fragment>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </Fragment>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { this.renderTable()}
-                    </tbody>
-                </table>
+                <Fragment>
+                    <ExerciseGraph data={exerciseList} />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Excercise Type</th>
+                                <th>Excercise detail</th>
+                                <th>Duration</th>
+                                <th>Date</th>
+                                { authorized.isAuthenticated &&
+                                <Fragment>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </Fragment>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { this.renderTable()}
+                        </tbody>
+                    </table>
+                </Fragment>
                 }
             </div>
         )

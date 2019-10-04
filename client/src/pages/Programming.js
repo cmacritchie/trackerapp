@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types';
+import ProgrammingGraph from '../components/ProgrammingGraph'
 import { NavLink} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getAllUserProgramming, 
@@ -63,6 +64,7 @@ class Programming extends React.Component {
 
     render() {
         const { authorized, programming } = this.props;
+        const { programmingList } = programming
 
         if(!programming.programmingLoaded){
             return <p>loading</p>
@@ -83,7 +85,7 @@ class Programming extends React.Component {
                 <p>No Programming Entries</p>
                 :
                 <Fragment>
-                    
+                    <ProgrammingGraph data={programmingList} />
                     <table>
                         <thead>
                             <tr>
