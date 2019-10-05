@@ -86,7 +86,7 @@ export const login = (credentials) => async dispatch => {
       dispatch({ type: WEIGHT_INITIAL_STATE})
 
       //Navigate?
-      history.push('/',[])
+      history.push('/')
     
     } catch (err) {
       console.log(err)

@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 exerciseList: state.exerciseList.map(item => {
-                    if(item._id == payload._id)
+                    if(item._id === payload._id)
                     {
                         return payload
                     }
@@ -57,7 +57,7 @@ export default function(state = initialState, action) {
         case EXERCISE_DELETE:
             return {
                 ...state,
-                exerciseList: state.exerciseList.filter(item => item._id != payload._id)
+                exerciseList: state.exerciseList.filter(item => item._id !== payload._id)
             }
         case EXERCISE_INITIAL_STATE:
             return initialState;

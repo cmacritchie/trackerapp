@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { store } from '../index';
+import { history } from '../components/App'
 import { 
     SLEEP_CREATE,
     SLEEP_ALL_USER,
@@ -26,7 +27,7 @@ export const createSleepEntry = entry => async dispatch => {
         toast.success("Entry Updated", {
             className: "green lighten-1"
         })
-
+        history.push('/sleep')
     } catch (err) {
         console.log(err)
     } 
@@ -46,7 +47,7 @@ export const updateSleepEntry = entry => async dispatch => {
         toast.success("Entry Updated", {
             className: "green lighten-1"
         })
-
+        history.push('/sleep')
     } catch (err) {
         console.log(err)
     } 

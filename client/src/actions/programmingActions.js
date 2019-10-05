@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { store } from '../index';
+import { history } from '../components/App'
 import { 
     PROGRAMMING_CREATE,
     PROGRAMMING_ALL_USER,
@@ -26,7 +27,7 @@ export const createProgrammingEntry = entry => async dispatch => {
         toast.success("Entry Updated", {
             className: "green lighten-1"
         })
-
+        history.push('/programming')
     } catch (err) {
         console.log(err)
     } 
@@ -46,7 +47,7 @@ export const updateProgrammingEntry = entry => async dispatch => {
         toast.success("Entry Updated", {
             className: "green lighten-1"
         })
-
+        history.push('/programming')
     } catch (err) {
         console.log(err)
     } 

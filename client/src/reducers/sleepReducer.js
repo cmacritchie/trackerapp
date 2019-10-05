@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 sleepList: state.sleepList.map(item => {
-                    if(item._id == payload._id)
+                    if(item._id === payload._id)
                     {
                         return payload
                     }
@@ -57,7 +57,7 @@ export default function(state = initialState, action) {
         case SLEEP_DELETE:
             return {
                 ...state,
-                sleepList: state.sleepList.filter(item => item._id != payload._id)
+                sleepList: state.sleepList.filter(item => item._id !== payload._id)
             }
         case SLEEP_INITIAL_STATE:
             return initialState;

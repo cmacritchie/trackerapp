@@ -48,7 +48,8 @@ sleepSchema.virtual('sleepEnd')
     return moment(this.wakeUpDate).set({
         'hour':wakeUpTime.get('hour'),
         'minute':wakeUpTime.get('minute')
-    }).format('dddd, MMMM Do YYYY, h:mm:ss a') 
+    })
+    // .format('dddd, MMMM Do YYYY, h:mm:ss a')
 })
 
 sleepSchema.virtual('duration')

@@ -83,7 +83,7 @@ class ProgrammingEntry extends Component {
                         {previouslySelected.length > 0 &&
                             <div className="col s6">
                                 <select onChange = {this.handleEntryChange('framework')} className="browser-default">
-                                <option value="" disabled selected>Select Previous Entry Frameworks</option>
+                                <option value="" disabled defaultValue>Select Previous Entry Frameworks</option>
                                 {previouslySelected.map(distinct => {
                                                         return <option key={distinct}>{distinct}</option>
                                                     })}
@@ -116,7 +116,7 @@ class ProgrammingEntry extends Component {
                     </div>
                     {/* <div className="row"> */}
                         {/* <div className="col s12"> */}
-                        <label>Sleep Start Date</label>
+                        <label>Programming Date</label>
                         <DatePicker
                                 required
                                 name='date'

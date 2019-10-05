@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types';
+import SleepGraph from '../components/SleepGraph'
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getAllUserSleep,
@@ -64,7 +65,7 @@ class Sleep extends React.Component {
 
     render() {
         const { authorized, sleep } = this.props;
-
+        const { sleepList } = sleep;
         if(!sleep.sleepLoaded) {
             return <p>loading</p>
         }
@@ -79,28 +80,31 @@ class Sleep extends React.Component {
                     </button>
                 </NavLink>}
 
-                { sleep.sleepList.length === 0 ? 
+                { sleepList.length === 0 ? 
 
                 <p>No Sleep Entries</p>
                 :
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rise</th>
-                            <th>Fall</th>
-                            <th>Total Hours</th>
-                            <th>Date</th>
-                            { authorized.isAuthenticated &&  
-                                <Fragment>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                </Fragment> }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderTable()}
-                    </tbody>
-                </table>
+                <Fragment>
+                    <SleepGraph data={sleepList} />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rise</th>
+                                <th>Fall</th>
+                                <th>Total Hours</th>
+                                <th>Date</th>
+                                { authorized.isAuthenticated &&  
+                                    <Fragment>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </Fragment> }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderTable()}
+                        </tbody>
+                    </table>
+                </Fragment>
                 }
             </div>
         )

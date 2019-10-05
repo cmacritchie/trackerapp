@@ -56,6 +56,10 @@ start with login and reducers. make sure that you save JWT in cookies
 ToDos:
 Pagination / Lazy Loading
 overall Stats
-mobile View
+mobile View OKAY FOR NOW
 set up Test Scripts
+login fail / register fail
+clear unused reducer types
+history push DONE
+add pomodoros to time
 

@@ -99,7 +99,7 @@ class ExerciseEntry extends Component {
                     {previouslySelected.length > 0 &&
                             <div className="col s6">
                                 <select onChange = {this.handleEntryChange('type')} className="browser-default">
-                                <option value="" disabled selected>Select Previous Exercise Types</option>
+                                <option value="" disabled defaultValue>Select Previous Exercise Types</option>
                                 {previouslySelected.map(distinct => {
                                                         return <option key={distinct}>{distinct}</option>
                                                     })}

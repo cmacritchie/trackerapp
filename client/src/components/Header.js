@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../actions/authActions';
+import { Navbar, Dropdown, Divider, NavItem } from "react-materialize";
 
 class Header extends Component {
 
@@ -15,77 +16,35 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <Fragment>
-                            <li>
-                                guest enter
-                            </li>
-                            <li>
-                                <NavLink to="/exercise">exercise</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/programming">programming</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/sleep">sleep</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/weight">weight</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/login">Login</NavLink>
-                            </li>    
-                        </Fragment>                   
-                );
+                        <Dropdown trigger={<a>Account</a>}>
+                            <NavLink className="sidenav-close" to="/login">Login</NavLink>
+                            <NavLink className="sidenav-close" to="/register">Register</NavLink>
+                        </Dropdown>
+                    );
             default:
-                return (<Fragment>
-                            <li>
-                                welcome {this.props.authorized.user.name}
-                            </li>
-                            <li>
-                                <NavLink to="/exercise">exercise</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/programming">programming</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/sleep">sleep</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/weight">weight</NavLink>
-                            </li>
-                            <li>
-                                <a onClick={() => this.props.logout(authorized.token)} href='#!'>
-                                    Logout
-                                </a>
-                            </li>
-                        </Fragment>
+                return (     
+                        <NavItem onClick={() => this.props.logout(authorized.token)} className="sidenav-close">
+                            Logout
+                        </NavItem>
                     )
 
         }
     }
 
     render() {
-        console.log(this.props.authorized)
+        const { authorized } = this.props;
         return (
-            <Fragment>
-            <nav>
-                <div className="nav-wrapper">
-                    <a href="#!" className="left brand-logo">
-                        Tracker
-                    </a>
-                    <ul className="right">
-                            {this.renderContent()}    
-                    </ul>
-                </div>
-            </nav>
-
-            <ul className="sidenav" id="mobile-demo">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="badges.html">Components</a></li>
-                <li><a href="collapsible.html">Javascript</a></li>
-                <li><a href="mobile.html">Mobile</a></li>
-            </ul>
-            </Fragment>
+<Fragment>
+            <Navbar className="blue" brand={<a>Tracker</a>}  alignLinks="right">
+                {authorized.isAuthenticated && <NavItem>Welcome {authorized.user.name}</NavItem>}
+                <NavLink className="sidenav-close" to="/programming">programming</NavLink>
+                <NavLink className="sidenav-close" to="/sleep">sleep</NavLink>
+                <NavLink className="sidenav-close" to="/weight">weight</NavLink>
+                <NavLink className="sidenav-close" to="/exercise">exercise</NavLink>
+                {this.renderContent()}
+            </Navbar>
+           {!authorized.isAuthenticated && <p>Craig's Entries</p> } 
+</Fragment>
         )
     }
 }

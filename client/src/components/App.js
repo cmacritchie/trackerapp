@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'; //there is React Router, but RRD is bes for web apps
+import { BrowserRouter, Router, Route, Switch } from 'react-router-dom'; //there is React Router, but RRD is bes for web apps
 // import { connect } from 'react-redux';
 import { ToastContainer, Flip } from 'react-toastify';
 import { createBrowserHistory } from 'history';
@@ -51,7 +51,7 @@ const App = () => {
           draggable={false}
           pauseOnHover
           />
-        <BrowserRouter history={history}>
+        <Router history={history}>
           <div>
             <Header />
             <Route exact path="/" component={Landing} />
@@ -79,7 +79,7 @@ const App = () => {
               <Route path="/weight/edit/:entryId" component={WeightWrapper} />
             </Switch>
           </div>
-        </BrowserRouter>
+        </Router>
       </div>
     );
   }
