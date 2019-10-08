@@ -96,7 +96,7 @@ class SleepEntry extends Component {
         const { fallAsleepDate, fallAsleepTime, wakeUpDate, wakeUpTime } = sleepEntry;
         
         const timeValidate = this.checkTime(fallAsleepDate, fallAsleepTime, wakeUpDate, wakeUpTime)
-       debugger;
+
         if(timeValidate > 0) {
             onSubmit(sleepEntry)
         } else {

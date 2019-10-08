@@ -1,5 +1,9 @@
 const express = require('express')
 const User = require('../models/user')
+const Sleep = require('../models/sleep')
+const Programming = require('../models/programming')
+const Weight = require('../models/weight')
+const Exercise = require('../models/exercise')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
@@ -105,6 +109,48 @@ router.delete('/api/users/me', auth, async (req, res) => {
     try {
         await req.user.remove()
         res.send(req.user)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/users/guest/recent', async(req, res) => {
+    try{
+        const craig = await User.findOne({ email:'craig.macritchie@gmail.com' }) 
+        const [sleep, exercise, weight, programming] = await Promise.all([
+            await Sleep.findOne({owner:craig._id}).sort({updatedAt: -1}),
+            await Exercise.findOne({owner:craig._id}).sort({updatedAt: -1}),
+            await Weight.findOne({owner:craig._id}).sort({updatedAt: -1}),
+            await Programming.findOne({owner:craig._id}).sort({updatedAt: -1})
+        ])
+        
+        res.send({
+            ...sleep !== null && { sleep }, 
+            ...exercise !== null && { exercise }, 
+            ...weight !== null && { weight }, 
+            ...programming != null && { programming }
+        })       
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/api/users/me/recent', auth, async(req, res) => {
+    try{
+        const [sleep, exercise, weight, programming] = await Promise.all([
+            await Sleep.findOne({owner:req.user._id}).sort({updatedAt: -1}),
+            await Exercise.findOne({owner:req.user._id}).sort({updatedAt: -1}),
+            await Weight.findOne({owner:req.user._id}).sort({updatedAt: -1}),
+            await Programming.findOne({owner:req.user._id}).sort({updatedAt: -1})
+        ])
+
+        res.send({
+            ...sleep !== null && { sleep }, 
+            ...exercise !== null && { exercise }, 
+            ...weight !== null && { weight }, 
+            ...programming != null && { programming }
+        })
+        
     } catch (e) {
         res.status(500).send()
     }

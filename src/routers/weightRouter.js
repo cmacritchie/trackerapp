@@ -31,7 +31,7 @@ router.post('/api/weight', auth, async (req, res) => {
 router.get('/api/weight/guest', async (req, res) => {
     try {
         const craig = await User.findOne({email:'craig.macritchie@gmail.com'})
-        const weight = await Weight.find({owner:craig._id}) 
+        const weight = await Weight.find({owner:craig._id}).sort({date: 1})
 
         res.send(weight)
     } catch (e) {
@@ -90,8 +90,6 @@ router.patch('/api/weight/:id', auth, async (req, res)=> {
 
 //delete add to postman
 router.delete('/api/weight/:id', auth, async (req, res) => {
-    console.log('reggads')
-    console.log(req)
     try {
         const weight = await Weight.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 

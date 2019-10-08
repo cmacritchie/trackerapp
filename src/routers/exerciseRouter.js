@@ -12,9 +12,6 @@ router.post('/api/exercise', auth, async (req, res) => {
         owner: req.user._id
     })
 
-    console.log(exercise.startTime)
-    console.log(exercise.endTime)
-
     try {
         await exercise.save()
         res.status(201).send(exercise)
@@ -99,8 +96,7 @@ router.delete('/api/exercise/:id', auth, async (req, res) => {
 //add to postman
 router.get('/api/exercisedistinct', auth, async (req, res) => {
     try {
-        // const programming = await Programming.find({})
-        const values = await Exercise.distinct('type')
+        const values = await Exercise.find({owner: req.user._id}).distinct('type')
         res.send(values) 
     } catch(e) {
         res.status(500).send()

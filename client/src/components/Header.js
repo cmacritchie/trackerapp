@@ -35,15 +35,20 @@ class Header extends Component {
         const { authorized } = this.props;
         return (
 <Fragment>
-            <Navbar className="blue" brand={<a>Tracker</a>}  alignLinks="right">
-                {authorized.isAuthenticated && <NavItem>Welcome {authorized.user.name}</NavItem>}
-                <NavLink className="sidenav-close" to="/programming">programming</NavLink>
-                <NavLink className="sidenav-close" to="/sleep">sleep</NavLink>
-                <NavLink className="sidenav-close" to="/weight">weight</NavLink>
-                <NavLink className="sidenav-close" to="/exercise">exercise</NavLink>
-                {this.renderContent()}
-            </Navbar>
-           {!authorized.isAuthenticated && <p>Craig's Entries</p> } 
+    <Navbar className="blue" brand={<NavLink to="/">Tracker</NavLink>}  alignLinks="right">
+        {
+            authorized.isAuthenticated ? 
+            <NavItem>{authorized.user.name}</NavItem>
+            :
+            <NavItem>Guest</NavItem>
+        }
+        <NavLink className="sidenav-close" to="/">Home</NavLink>
+        <NavLink className="sidenav-close" to="/programming">Programming</NavLink>
+        <NavLink className="sidenav-close" to="/sleep">Sleep</NavLink>
+        <NavLink className="sidenav-close" to="/weight">Weight</NavLink>
+        <NavLink className="sidenav-close" to="/exercise">Exercise</NavLink>
+        {this.renderContent()}
+    </Navbar>
 </Fragment>
         )
     }

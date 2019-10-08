@@ -37,23 +37,18 @@ const SleepToolTip=({active, payload, label}) => {
 }
 
 const SleepGraph = ({data}) => {
-    
-    console.log(data)
-    
 
-    
-
-    const formattedData=()=> {
+    const formattedData = () => {
         const minPerDay = 1440
         
-        return data.map(sleepEntry => {
+         return data.map(sleepEntry => {
             const wakeDate = moment(sleepEntry.sleepEnd)
             const mmtMidnight = wakeDate.clone().startOf('day');
             const diffMinutes = wakeDate.diff(mmtMidnight, 'minutes');
             const wakeTimeMinutes = diffMinutes + minPerDay
             const restTimeMinutes = wakeTimeMinutes - sleepEntry.duration
             const totalSleepTimeMinutes = wakeTimeMinutes - restTimeMinutes
-            console.log()
+            
             return {
                 date:new Date(sleepEntry.wakeUpDate).getTime(),
                 value: [restTimeMinutes, wakeTimeMinutes],
@@ -61,8 +56,6 @@ const SleepGraph = ({data}) => {
             }
         })   
     }
-    
-    
 
     return (
         <ResponsiveContainer width = '95%' height = {500}>
@@ -74,20 +67,30 @@ const SleepGraph = ({data}) => {
                     name='time'
                     tickFormatter = {(unixTime) => moment(unixTime).format('MMM DD, YYYY')}
                     type = 'number'
+                    scale='time'
 
                     />       
                 <YAxis
                     dataKey='value'
-                    //label={{ value: 'time (minutes)', angle: -90, position: 'insideLeft' }}
                     tickFormatter ={tickFormatter}
                     />
                     <Tooltip content={<SleepToolTip />} />
                 
-                <Bar dataKey="value" fill="#8884d8">
+                {
+                    formattedData.length < 4 ? 
+                    <Bar maxBarSize={25} barSize={22} dataKey="value" fill="#8884d8"> 
+                        <LabelList dataKey="duration" />
+                    </Bar>
+                    :
+                    <Bar maxBarSize={25} dataKey="value" fill="#8884d8" >
+                        <LabelList dataKey="duration" />
+                    </Bar>
+                }
+                
                
-                <LabelList dataKey="duration" />
+                
     
-                    </Bar>   
+                      
             </BarChart>
       </ResponsiveContainer>
     );

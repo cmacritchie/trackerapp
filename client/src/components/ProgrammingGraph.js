@@ -70,15 +70,26 @@ const ProgrammingGraph = ({data}) => {
         return accumulator;
     }, []);
 
-    const renderBars = () =>{
+    const renderBars = (barsize = false) =>{
         const randomColorArray = randomcolor({count: uniqueFrameworks.length})
-        const test = uniqueFrameworks.map((framework, index) => {
-            return(
-                <Bar key={framework} maxBarSize={20} dataKey={framework} stackId="a" fill={randomColorArray[index]} />
-            )
+        const bars = uniqueFrameworks.map((framework, index) => {
+            if(barsize){
+                return <Bar key={framework} 
+                            maxBarSize={20} 
+                            barSize={20}
+                            dataKey={framework} 
+                            stackId="a" 
+                            fill={randomColorArray[index]} />
+            } else {
+                return <Bar key={framework} 
+                            maxBarSize={20} 
+                            dataKey={framework} 
+                            stackId="a" 
+                            fill={randomColorArray[index]} />
+            }
         })
 
-        return test;
+        return bars;
     }
 
     return (
@@ -91,13 +102,14 @@ const ProgrammingGraph = ({data}) => {
                     name='time'
                     tickFormatter = {(unixTime) => moment(unixTime).format('MMM DD, YYYY')}
                     type = 'number'
-
                     />       
                 <YAxis
                      label={{ value: 'time (minutes)', angle: -90, position: 'insideLeft' }}
                     />
                 <Tooltip content={<BarChartToolTip />} />
-                {
+                {formattedData.length < 4 ?
+                    renderBars(true)
+                    :
                     renderBars()
                 }
                 <Legend />

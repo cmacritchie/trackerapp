@@ -64,7 +64,7 @@ class ProgrammingEntry extends Component {
 
     render() {
         const { previouslySelected } = this.props;
-        console.log(previouslySelected, previouslySelected.length)
+
         return (
             <Fragment>
                 <h1>Programming Entry</h1>

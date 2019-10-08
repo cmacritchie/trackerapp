@@ -18,14 +18,14 @@ router.post('/api/programming', auth, async (req, res) => {
     }
 })
 
-router.get('/api/programming', async (req, res) => {
-    try {
-        const programming = await Programming.find({})
-        res.send(programming) 
-    } catch(e) {
-        res.status(500).send()
-    }
-})
+// router.get('/api/programming', async (req, res) => {
+//     try {
+//         const programming = await Programming.find({})
+//         res.send(programming) 
+//     } catch(e) {
+//         res.status(500).send()
+//     }
+// })
 
 //add to postman
 router.get('/api/programming/guest', async (req, res) => {
@@ -104,27 +104,9 @@ router.delete('/api/programming/:id', auth, async (req, res) => {
     }
 })
 
-// router.get('/api/programming/distinct', async (req, res) => {
-//     console.log('We are in')
-//     try {
-//         // console.log('router distinct')
-//         // const values = await Programming.distinct('framework', function(error, ids) {
-//         //     console.log(ids)
-//         // })
-//         // console.log('values')
-//         // res.send(values)
-
-//         res.send({'test':'test'})
-//     } catch (e) {
-//         console.log('problem')
-//         res.status(500).send()
-//     }
-// })
-
 router.get('/api/programmingdistinct', auth, async (req, res) => {
     try {
-        // const programming = await Programming.find({})
-        const values = await Programming.distinct('framework')
+        const values = await Programming.find({owner: req.user._id}).distinct('framework')
         res.send(values) 
     } catch(e) {
         res.status(500).send()

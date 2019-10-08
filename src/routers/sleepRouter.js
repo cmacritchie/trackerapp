@@ -18,14 +18,14 @@ router.post('/api/sleep', auth, async (req, res) => {
     }
 })
 
-router.get('/api/sleep', async (req, res) => {
-    try {
-        const sleep = await Sleep.find({})
-        res.send(sleep)
-    } catch(e) { 
-        res.status(500).send()
-    }
-})
+// router.get('/api/sleep', async (req, res) => {
+//     try {
+//         const sleep = await Sleep.find({})
+//         res.send(sleep)
+//     } catch(e) { 
+//         res.status(500).send()
+//     }
+// })
 
 router.get('/api/sleep/guest', async (req, res) => {
 

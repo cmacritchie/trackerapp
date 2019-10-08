@@ -38,7 +38,6 @@ class Register extends Component {
     }
 
     validation(userCredentials) {
-        console.log(userCredentials)
         let submitFlag = true;
         let validationUpdate = {};
         

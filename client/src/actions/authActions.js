@@ -53,6 +53,11 @@ export const login = (credentials) => async dispatch => {
     try {
       const res = await axios.post('/api/users/login', body, config);
 
+
+      dispatch({ type: PROGRAMMING_INITIAL_STATE})
+      dispatch({ type: EXERCISE_INITIAL_STATE})
+      dispatch({ type: SLEEP_INITIAL_STATE})
+      dispatch({ type: WEIGHT_INITIAL_STATE})
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

@@ -8,8 +8,6 @@ import moment from 'moment';
 
 
 const WeightGraph = ({data}) => {
-    console.log(data);
-    
     const weightData = data.map(item => {
         return {
             time: new Date(item.date).getTime(),           //moment(item.date).unix(),

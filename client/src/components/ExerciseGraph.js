@@ -68,18 +68,28 @@ const ExerciseGraph = ({data}) => {
         return accumulator;
     }, []);
 
-    const renderBars = () =>{
+    const renderBars = (barsize = false) => {
         const randomColorArray = randomcolor({count: uniqueExerciseTypes.length})
-        const test = uniqueExerciseTypes.map((type, index) => {
-            return(
-                <Bar key={type} maxBarSize={20} dataKey={type} stackId="a" fill={randomColorArray[index]} />
-            )
+        const bars = uniqueExerciseTypes.map((type, index) => {
+           if(barsize){
+                return <Bar key={type} 
+                        maxBarSize={20} 
+                        barSize={20}
+                        dataKey={type} 
+                        stackId="a" 
+                        fill={randomColorArray[index]} />
+           } else {
+                return <Bar key={type} 
+                            maxBarSize={20} 
+                            dataKey={type} 
+                            stackId="a" 
+                            fill={randomColorArray[index]} />
+           }
+            
         })
 
-        return test;
+        return bars;
     }
-
-    debugger;
 
     return (
         <ResponsiveContainer width = '95%' height = {500}>
@@ -91,20 +101,22 @@ const ExerciseGraph = ({data}) => {
                     name='time'
                     tickFormatter = {(unixTime) => moment(unixTime).format('MMM DD, YYYY')}
                     type = 'number'
+                    scale ='time'
 
                     />       
                 <YAxis
                      label={{ value: 'time (minutes)', angle: -90, position: 'insideLeft' }}
                     />
                 <Tooltip content={ExerciseToolTip} />
-                {
+                {formattedData.length < 4 ?
+                    renderBars(true)
+                    :
                     renderBars()
                 }
                 <Legend />
             </BarChart>
       </ResponsiveContainer>
-    );
- 
+    ); 
 }
 
 export default ExerciseGraph;

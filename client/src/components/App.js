@@ -15,13 +15,13 @@ import Sleep from '../pages/Sleep'
 import SleepWrapper from '../pages/SleepWrapper';
 import Weight from '../pages/Weight'
 import WeightWrapper from '../pages/WeightWrapper';
+import Landing from '../pages/Landing'
 import { store } from '../index';
 import "materialize-css/dist/css/materialize.min.css";
 import "materialize-css/dist/js/materialize.min.js";
 
 export const history = createBrowserHistory()
 
-const Landing =()=><h1>Landing</h1>
 const Dashboard =()=><h1>Dash</h1>
 
 
