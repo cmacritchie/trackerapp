@@ -37,6 +37,7 @@ when running npm run build
 Steps to make this
 
 BACKEND
+setup deve dependency script (with nodemon) for global modules
 set up an index router that uses express and mongodb
 set up environment keys and don't forget gitignore. Now you can commit if you like
 in the db file set up the configurationn for mongoose
@@ -52,6 +53,13 @@ use concurrently to run both front end and back end at the same time
 set up proxy so that routes relative routes will run properly
 start with login and reducers. make sure that you save JWT in cookies
 
+deployment
+create cloud mongodb cluster
+connect to it
+create heroku location
+
+
+
 
 ToDos:
 Pagination / Lazy Loading
@@ -62,4 +70,6 @@ login fail / register fail
 clear unused reducer types
 history push DONE
 add pomodoros to time
+Stephen grider style prod vs dev
+set up cookie key -Stephen grider full stack application
 
