@@ -57,6 +57,7 @@ deployment
 create cloud mongodb cluster
 connect to it
 create heroku location
+set up heroku postbuilds
 
 
 
