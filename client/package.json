@@ -8,7 +8,7 @@
     "history": "^4.10.1",
     "http-proxy-middleware": "^0.20.0",
     "materialize-css": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "randomcolor": "^0.5.4",
     "react": "^16.9.0",
     "react-chartjs-2": "^2.8.0",
